@@ -1,4 +1,7 @@
-package Sandboxes;
+/*
+ *  Experimenting with ArrayList class and Collections methods 
+ */
+
 import java.util.*;
 import java.util.Collections;
 
@@ -7,7 +10,7 @@ public class ArrayListSandbox {
 
         ArrayList<String> favSongs = new ArrayList<>();
         Scanner scan = new Scanner(System.in);
-
+        
         // ArrayList add() 
         favSongs.add("Autum Leaves");
         favSongs.add("Stal");
@@ -70,5 +73,7 @@ public class ArrayListSandbox {
         System.out.println("Sorting your values from least to greatest: ");
         Collections.sort(intList);
         System.out.println(intList);
+
+        scan.close();
     }
  }
