@@ -65,7 +65,6 @@ class Item {
         setQuantity(quantity);
     }
        
-       
     //*******************************************************
     // Accessor and Mutator Methods
 
@@ -287,44 +286,45 @@ class Cart {
         this.list.add(newItem);
     }
     //****************************************************************
-     
-    /*This checkout method calculate the total purchase, shipping cost, tax and the total amount due . it should include the followings
-    1. display the checking out message , refer to the sample output
-    2. call the method totalPurchaseAmount() to figure our the total amount of money owed 
-    3. call the discount() method to set the value for the instance ariable discount 
-    4. if total money spending is >= 75 the shipping is free otherwise must call the method shipping cost()
-    5. call the toString method to display the items in the arrayList . toString method must have been implemented in this class
-    6. display total money owed
-    7. display the total tax = 7.75/100 * money owed
-    8. display the total after discount
-    9. displaying either the shipping cost or display "Free shipping"; 
-    10 finally display amount due = money owed + tax + shipping cost(might be zero) 
-    you can use String .format method to get rid off the decimal pints or printf
-    */
-     
-     
-     
-     
-     
-     
-     
-     
-    
-    //**************************************************
-    /*this changeQuantity method allows the user to change  the quantity of a particular item in the list
-    this method gets the barcode of the item, 
-    finds the item in the list
-    and then change the quantity of the item  to the new given quantity.  
-     
-    A for loop is needed  
-    loop thriugh the ArrayList, find the item with the given barcode, if the item is at the index i then
-     
-    list.get(i).setQuantity(quantity) 
-    System.out.println("Updated itemlist.get(i)  // printing the updata item        
-       
-    method returns true if the item is found
-    else display "item not found" and returns false*/  
+    // displays the checkout reciept for all items. includes discounts, tax, and shipping fees 
+    public void checkout() {
+        double taxOwed;
+        double totalCost;               // applies tax, and shipping fees
+        double discountedTotalCost;     // applies discount, tax, and shipping fees
+        String shippingCostMsg;
 
+        // calculate tax, discount, and shipping fees
+        taxOwed = totalPurchaseAmount() * 7.75/100;
+        totalCost = totalPurchaseAmount() + shippingCost() + taxOwed;
+        discountedTotalCost =  (totalPurchaseAmount() + shippingCost() + taxOwed) - getDiscount();
+
+        // determines what shipping message to display
+
+        // no shipping cost
+        if(shippingCost() == 0) {
+            shippingCostMsg = "Free shipping";
+        }
+
+        // if there is a shipping cost, display the cost into message
+        else {
+            shippingCostMsg = String.format("Shipping cost: $%.2f", shippingCost()) ;
+        }
+
+        System.out.println();
+        System.out.println("-".repeat(10) + "Checkout Reciept" + "-".repeat(10));
+        System.out.println(toString());                      // displays each item's info
+        System.out.printf("%nSubtotal: $%.2f" + 
+                          "%nTax: $%.2f" + 
+                          "%n%s" +                           // "free shipping" or the shipping cost
+                          "%nAmount due: $%.2f" +            // after taxes and shipping, but BEFORE discount
+                          "%nDiscount amount: $%.2f" +
+                          "%nTotal cost AFTER discount, shipping, and taxes: $%.2f %n",
+                          totalPurchaseAmount(), taxOwed, shippingCostMsg, totalCost, getDiscount(), discountedTotalCost);
+        System.out.println("-".repeat(36));
+    }
+
+    //***************************************************************
+    // changes the quantity of a specific item 
     public boolean changeQuantity(String barcode, int quantity) {
         boolean quantityChanged = false;
         String quantityChangedMsg = "item not found";
@@ -343,7 +343,8 @@ class Cart {
         System.out.println(quantityChangedMsg);
         return quantityChanged;
     }
-    //***********************************************************************************
+
+    //***************************************************************
     /*This toString method creates a String representing all the items in the person's list
     a for loop is needed to go through the list and call the tostring method on each item. 
     Creating a String representing all the items in the list, finally returns the string
@@ -355,67 +356,83 @@ class Cart {
         String listString = "";
 
         for(OnlineItem i : list) {
-            listString += i.toString() + "\n";
+            listString += i.toString() + "\n---------";
         }
         return listString;
     }
     
-    //**************************************
-    /*
-    method totalPurchasedAmount finds out the total money the person owed, not including the tax and the shipping and the discount
-    This code should be used somewhere in your code: 
-    loop through the list
-    get the total for each item at the index i by list.get(i).getTotal()
-    add the caclculated total to a variable that holds the total cost for the items in the list 
-    */
-    
-    
-    
-    
-    
-    
-    
-    // 
+    // calculates the total cost of all items in the list BEFORE shipping, and discount
+    public double totalPurchaseAmount() {
+        double totalCost = 0;
+        
+        // iterate through entire list and add the totals together
+        for(OnlineItem i : list) {
+            totalCost += i.getTotal();
+        }
+        return totalCost;
+    }
     
     //***************************************************************
-    /*Returns the weight of the all the items in the arraylist, 
-    need a for loop and the code: list.get(i).getWeight();
-    should be used in the for loop along with some additional codes    
-    */
-    
-    
-    
-    
-    
-    
-    
+    // calculates the total weight of all items in the list
+    public double totalWeight() {
+        double totalWeight = 0;
+
+        // iterate through entire list and add all the weights together
+        for(OnlineItem i : list) {
+            totalWeight += i.getWeight();
+        }
+        return totalWeight;
+    }
     
     //******************************************************************
-    /*
-    This method shippingCost  calculates the shipping cost for all the items in the cart. shipping is free for the purchase of $75 or more.
-    if the total money owed is less than 75$ then the shipping cost must be calculated based on the weight of all the items in the list
-    do the following steps:
-    1. call the method totalPurchaseAmount(), if the amount returned is >= 75 then return 0
-    2. otherwise  call the method totalWeight()
-    3. return the result of step 2 * SHIP_RATE
-     
-     
-     
-     
-     
-     
-     
-    */
-    /* This method discount()  sets the variable discount based on the following
-    
-    Purchases up to 99 gets 5% discount discount = totalPurchaseAmount(); * 5/100
-    Purchase 100 -199 gets 10% discount
-    purchase 200 - 299 get 15% discount
-    Purchase 300 - 399 gets 20% discount
-    purchase above 400 gets 25% discount
+    // calculates shipping cost depending on total price of an order
+    public double shippingCost() {
+        double shippingCost = 0;
+        
+        // free shipping for orders >= $75
+        if(totalPurchaseAmount() >= 75) {
+        }
 
-    
-    */
+        // else, apply shipping for orders < $75
+        else {
+            shippingCost = totalWeight() * SHIPPING_COST_PER_POUND;
+        }
+
+        return shippingCost;
+    }
+
+    //******************************************************************
+    // calculates the discount based on total price
+    public double discount() {
+        double discount = 0;
+
+        // purchases up to $99 get 5% off
+        if(totalPurchaseAmount() <= 99) {
+            discount = (double)(totalPurchaseAmount() * 5/100);
+        }
+
+        // purchases from $100-$199 get 10% off
+        else if((totalPurchaseAmount() >= 100) && (totalPurchaseAmount() <= 199)) {
+            discount = (double)(totalPurchaseAmount() * 10/100);
+        }
+
+        // purchases from $200-$299 get 15% off
+        else if((totalPurchaseAmount() >= 200) && (totalPurchaseAmount() <= 299)) {
+            discount = (double)(totalPurchaseAmount() * 15/100);
+        }
+
+        // purchases from $300-$399 get 20% off
+        else if((totalPurchaseAmount() >= 300) && (totalPurchaseAmount() <= 399)) {
+            discount = (double)(totalPurchaseAmount() * 20/100);
+        }
+
+        // purchases >= $400 get 25% off
+        else {
+            discount = (double)(totalPurchaseAmount() * 25/100);
+        }
+        return discount;
+    }
+    //******************************************************************
     
     /*additional method 1: must have at leat 5 lines of code excluding the {}. 
     no print/println. Must return an ArrayList. Must have at least two parameters
@@ -445,6 +462,9 @@ class OnlineShoppingCartDriver {
       Cart c1 = new Cart(5.50, list);
       c1.add("123456", 12.99, "bacon", "pork product", 2, 1.24); 
       c1.add("123454", 2.99, "gum", "for your chewing needs", 1, 0.53);
+      c1.add("127532", 45.99, "Mini-fridge", "a small container to store food and drinks", 1, 30.5); 
+
       System.out.print(c1.toString());
+      c1.checkout();
     }
 }
