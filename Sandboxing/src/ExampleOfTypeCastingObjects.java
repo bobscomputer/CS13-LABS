@@ -22,7 +22,7 @@ class Beta extends Bitch {
 }
 
 
-class Driver {
+class TypeCastingDriver {
     public static void main(String [] args) {
         Bitch b1tch = new Bitch();
 
