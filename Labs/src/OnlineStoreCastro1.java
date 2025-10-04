@@ -140,11 +140,11 @@ class Item {
     // returns a String of all attributes
     @Override
     public String toString() {
-        return String.format("%nItem: %s" +
-                             "%nDescription: %s" +
-                             "%nBarcode: %s" + 
-                             "%nQuantity: %d" + 
-                             "%nPrice: $%.2f %n", 
+        return String.format("%nItem: %54s" +
+                             "%nDescription: %47s" +
+                             "%nBarcode: %51s" + 
+                             "%nQuantity: %50d" + 
+                             "%nPrice: $%52.2f %n", 
                              name, description, barCode, quantity, price);              
     }
 
@@ -154,17 +154,18 @@ class Item {
     public boolean equals(Object o) {
         boolean match = false;
 
-        // typecast into Item object
+        // typecast into String object
         if(o instanceof Object) {
-            Item i = (Item) o;      
+            String i = (String) o;      
 
-            // after safely typecasting, check if object's barcode matches, return true if they match
-            if(this.getBarCode() == i.getBarCode()) {
+            // after safely typecasting, check if object's string matches, return true if they match
+            if(this.getBarCode().equals(i)) {
                 match = true;
             }
         }
         return match;
     }
+        
     //*********************************************************************************
     // Calculates total price of the item by multiplting price by quantity
     public double getTotal() {
@@ -253,16 +254,15 @@ class Cart {
     }
 
     //*******************************************************
-    /*This remove method removes an item from the ArrayList based on the barcode*/
-
-    // NEED MY OWN EXPLANATION ...
+    // Removes an item from the list based on a given barcode string
     public boolean remove(String barcode) {
         boolean removedBarcode = false;
         
         // iterate through list to find matching barcode
-        for(OnlineItem i : list) {
+        for(int i = 0; i<list.size(); i++) {
+
             // if the barcode is in our list, remove it, return true
-            if(i.getBarCode() == barcode) {
+            if(list.get(i).equals(barcode)) {
                 list.remove(i);
                 removedBarcode = true;
             }
@@ -271,12 +271,7 @@ class Cart {
         return removedBarcode;
     }
     //******************************************************************
-    /* This method gets the info for an item such as as barcode,description, quantity,price, weight as its paramter
-    create an object of OnlineItem
-    add the created objct to the end of the list
-    */
-
-    // NEED MY OWN EXPLANATION ...
+    // adds a new OnlineItem object to the end of the list
     public void add(String barcode, double price, String name, String description, int quantity, double weight) {
 
         // Create a new object with given arguments
@@ -313,12 +308,12 @@ class Cart {
         System.out.println();
         System.out.println("-".repeat(10) + "Checkout Reciept" + "-".repeat(10));
         System.out.println(toString());                      // displays each item's info
-        System.out.printf("%nSubtotal: $%.2f" + 
-                          "%nTax: $%.2f" + 
-                          "%n%s" +                           // "free shipping" or the shipping cost
-                          "%nAmount due: $%.2f" +            // after taxes and shipping, but BEFORE discount
-                          "%nDiscount amount: $%.2f" +
-                          "%nTotal cost AFTER discount, shipping, and taxes: $%.2f %n",
+        System.out.printf("%nSubtotal: %50.2f" + 
+                          "%nTax: %55.2f" + 
+                          "%nShipping: %50s" +                           // "free shipping" or the shipping cost
+                          "%nAmount due: %48.2f" +            // after taxes and shipping, but BEFORE discount
+                          "%nDiscount amount: %43.2f" +
+                          "%nTotal cost AFTER discount, shipping, and taxes: %12.2f %n",
                           totalPurchaseAmount(), taxOwed, shippingCostMsg, totalCost, getDiscount(), discountedTotalCost);
         System.out.println("-".repeat(36));
     }
@@ -333,7 +328,7 @@ class Cart {
         for(OnlineItem s : list) {
 
             // if there is a matching barcode, change the quantity of the matching item, return true
-            if(s.getBarCode() == barcode) {
+            if(s.getBarCode().equals(barcode)) {
                 s.setQuantity(quantity);
                 quantityChanged = true;
                 quantityChangedMsg = String.format("Updated list. Changed item quantity with the barcode: %s", barcode);
@@ -432,39 +427,132 @@ class Cart {
         }
         return discount;
     }
+
     //******************************************************************
-    
-    /*additional method 1: must have at leat 5 lines of code excluding the {}. 
-    no print/println. Must return an ArrayList. Must have at least two parameters
-    Must have a loop. Must be called in the driver
-    */
-    
-    
-    
-    /*additional method 2: must have at leat 5 lines of code or more excluding the {}.
-    no print/println. Must return an ArrayList. Must have at least two parameters
-    Must have a loop
-    Must be called in the driver
-    */
-      
-}
+    // additional method 1: 
+    // applies a tariff to all items or one item; tariffFee must be >= 1, 
+    // example) if fee is 25% --> 1.25
+    public ArrayList<OnlineItem> tariffList(boolean tariffAll, double tariffFee) {
+        int currentListSize = getList().size();
+        int randItem;
+        Random rand = new Random();
+
+        // applies tariff fee to all items based on the given tariff fee
+        if((tariffAll) && tariffFee >= 1) {
+            for(int i = 0; i<currentListSize; i++) {
+                list.get(i).setPrice(list.get(i).getPrice() * tariffFee);
+            }
+        }
+
+        // I wanted to get a user prompt for which item to be tariffed, but to avoid print, this uses random() instead
+        // applies tariff fee to one random item based on the given tariff fee
+        else if((tariffAll == false) && tariffFee >= 1) {
+            randItem = rand.nextInt(0, currentListSize+1);
+            list.get(randItem).setPrice(list.get(randItem).getPrice() * tariffFee);
+        }
+
+        return list;
+    }
+
+    //******************************************************************
+    // additional method 2:
+    // clones the entire cart or one item based on args in parameter 
+    public ArrayList<OnlineItem> cloneCart(boolean cloneAll, int numClones) {
+        int currentListSize = getList().size();
+        int randItem;
+        Random rand = new Random();
+
+        // clones all items based by the given arg amount
+        if(cloneAll && numClones > 0) {
+            for (int i = 0; i<numClones; i++) {
+                for (int j = 0; j<currentListSize; j++) {
+                    list.add(list.get(j));
+                }
+            }
+        }
+
+        // I wanted to get a user prompt for which item to be cloned, but to avoid print, this uses random() instead
+        // clones one random item based on the given arg amount
+        else if ((cloneAll == false) && numClones > 0) {
+            randItem = rand.nextInt(0, currentListSize+1);
+            list.add(list.get(randItem));
+        }
+
+        return list;
+    }
+} // end of Cart
  
 //*********************************************************************
-/*
-once you implemet all three classes above, uncomment the following driver and test your code. 
-Your code must generate the exact output that is provided.
-refer to the sample output while coding this class
-*/
 class OnlineShoppingCartDriver {
    public static void main(String[] args) {
     ArrayList<OnlineItem> list = new ArrayList<>();
 
-      Cart c1 = new Cart(5.50, list);
-      c1.add("123456", 12.99, "bacon", "pork product", 2, 1.24); 
-      c1.add("123454", 2.99, "gum", "for your chewing needs", 1, 0.53);
-      c1.add("127532", 45.99, "Mini-fridge", "a small container to store food and drinks", 1, 30.5); 
+        Cart c1 = new Cart(5.50, list);
+        c1.add("123456", 12.99, "bacon", "pork product", 2, 1.25); 
+        c1.add("123454", 2.99, "gum", "for your chewing needs", 1, 0.09);
+        c1.add("127532", 45.99, "Mini-fridge", "a small container to store food and drinks", 1, 30.5); 
 
-      System.out.print(c1.toString());
-      c1.checkout();
+        // Testing toString()
+        System.out.println("*".repeat(20) + " Calling toString " + "*".repeat(20));
+        System.out.print(c1.toString());
+        System.out.println();
+
+        // Testing remove()
+        System.out.println("*".repeat(4) + " Testing remove(). Removing bacon: Barcode = 123456 " + "*".repeat(4));
+        c1.remove("123456");
+        // Display updated list
+        System.out.print(c1.toString());
+        System.out.println();
+
+        // Testing add()
+        System.out.println("*".repeat(12) + " Testing add(). Adding 32 oz. Pepsi " + "*".repeat(12));
+        c1.add("126767", 7.99, "32 oz. Pepsi", "party size pepsi", 3, 2.3);
+        // Display updated list
+        System.out.print(c1.toString());
+        System.out.println();
+
+        // Changing quantity
+        System.out.println("*".repeat(13) + " Updating quantity of gum to '5' " + "*".repeat(14));
+        c1.getList().get(0).setQuantity(5);
+        // Display updated list
+        System.out.print(c1.getList().get(0).toString());
+        System.out.println();
+
+        // Testing checkout()
+        System.out.println("*".repeat(20) + " Testing checkout() " + "*".repeat(20));
+        c1.checkout();
+        System.out.println();
+
+
+        //-------------------------------------------
+        // Testing additional methods
+        System.out.println("*".repeat(15) + " Testing additional methods: tariffList() and cloneCart() " + "*".repeat(15));
+
+        System.out.println("\nTesting tariffList()."); 
+        System.out.println("This method takes a boolean and double value." +
+                           "\nIt applies the given tariff fee to either all items in the list or one random item.\n");
+
+        // Testing additional method #1: tariffList()
+        System.out.println("Applying tariff to all items with a tariff fee of 35% (1.35). tariffList(true, 1.35)");
+        c1.tariffList(true, 1.35);      
+
+        // Display updated list
+        System.out.println("Showing updated reciept ... using checkout() not toString()");
+        c1.checkout();
+    
+        // Testing additional method #2: cloneCart()
+        System.out.println("*".repeat(20) + " Testing cloneCart() " + "*".repeat(20)); 
+        System.out.println("This method takes a boolean and an int value." +
+                           "\nIt clones either all items and adds them to the list or clones one random item.\n" + 
+                           "The int arg determines how many times to clone an item.");
+
+        System.out.printf("%nList size before cloning: %d. ", c1.getList().size());
+        System.out.println("\nCloning all items once. cloneCart(true, 1)");
+        c1.cloneCart(true, 1);           
+
+        // Display updated list
+        System.out.printf("%nList size after cloning: %d. ", c1.getList().size());
+        System.out.println("\nShowing updated reciept ... using checkout() not toString()");
+        c1.checkout();
     }
 }
