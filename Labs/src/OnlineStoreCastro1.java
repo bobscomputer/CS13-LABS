@@ -42,14 +42,14 @@ public class OnlineStoreCastro1 {
 class Item {
     // Instance Variables
     private String barCode;
-    private double price;       // specialized set method to avoid non-negative
+    private double price;           // specialized set method to avoid non-negative
     private String name;
     private String description;
-    private int quantity;       // specialized set method to avoid non-negative
+    private int quantity;           // specialized set method to avoid non-negative
 
-    
-     //**********************************************************************************
-     // constructors, avoids negative values for price and quantity: 
+
+    //**********************************************************************************
+    // constructors, avoids negative values for price and quantity: 
 
     // Null constructor for testing
     public Item() {
