@@ -49,8 +49,7 @@ class Item {
 
     
      //**********************************************************************************
-     /*constructor: call the methods setPrice and setQuantity implemented in this class to make sure that the user
-     is not giving any negative values for the quantity or the price*/ 
+     // constructors, avoids negative values for price and quantity: 
 
     // Null constructor for testing
     public Item() {
@@ -181,9 +180,7 @@ class OnlineItem extends Item {
     private double weight;      // to calculate shipping costs
     
     //**************************************************************************************************
-    /*constructor : make sure to refrence the constructor in the Item class by using the super keyword
-    this constructor gets the following as the list of its parameters
-    String bar, String name, String description, int quantity, double price, double weight*/
+    //constructors
     
     // Null constructor for testing
     public OnlineItem() {
@@ -215,13 +212,12 @@ class OnlineItem extends Item {
     }
 }
  
-/* this class does not extend any other classes. there is a Has-a relationship between this class and the onlineItem class*/
 class Cart {
     
     // Constants & Instance Variables
     public static final double SHIPPING_COST_PER_POUND = 1.50;  // shipping cost per pound
     private double discount;                                    // calculated based on purchased amount
-    ArrayList<OnlineItem> list;                                 // = new ArrayList<>(); ???
+    ArrayList<OnlineItem> list;                                 
      
     //*******************************************************************************
     /* constructor: instantiates the ArrayLits list*/
@@ -340,16 +336,12 @@ class Cart {
     }
 
     //***************************************************************
-    /*This toString method creates a String representing all the items in the person's list
-    a for loop is needed to go through the list and call the tostring method on each item. 
-    Creating a String representing all the items in the list, finally returns the string
-    inside the loop: list.get(i).toString()
-    */
-    
+    // creates a string of attributes from OnlineItem from the ArrayList
     @Override
     public String toString() {
         String listString = "";
 
+        // create a string for all items in the list
         for(OnlineItem i : list) {
             listString += i.toString() + "\n---------";
         }
