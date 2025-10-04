@@ -3,15 +3,17 @@ Date: 10/1/25
 Testimony: The following program is written by me, Lynn Castro.
 ----------------------------------------------------------------
                 SELF-GRADE SCORE AND EXPLANATION
-Self grade: 
+Self grade: 95/100
 
-Proper naming:
-Indentation:
-Comments:
-Program compiles:
-Program runs and simiarly matches provided output:
-Requirements met:
-Self-grade provided: 
+Proper naming: All methods and variables have short and descriptive names. 5/5
+Indentation: Code is organized and indented by at least 4 spaces. 5/5
+Comments: All logic is followed by a comment explaning it. 5/5
+Program compiles: Program compiles in JGRASP 15/15
+Program runs and simiarly matches provided output: 25/30
+- Program runs and matches similar results to provided output. 
+- However, it doesn't match exactly because I use different args.
+Requirements met: All methods are created and I added addtional methods. 25/25
+Self-grade provided: I provided a self grade: 5/5
 ----------------------------------------------------------------
 
 DO NOT REMOVE ANY OF THE COMMENTS
@@ -19,18 +21,28 @@ DO NOT REMOVE ANY OF THE COMMENTS
 (30 points)Additonal required methods
 Must answer the following questions otherwise no points will be given 
 Method 1: 
-what does the method do?
+- tariffFee()
+what does the method do? 
+- adds a tariff fee to all items or one random item.
 Is the return type an ArrayList
+- yes
 How does it add functionality to the cart class
+- allows user to add a tariff on all products on their own defined rate.
+- i wanted to allow the user to be prompted which specific item to add a tariff to
+- but the assignment says to avoid print/println, so i made it a random item instead of prompting with scanner
 How many lines of code does it have
+- 9 lines
 
 Method 2: 
+- cloneCart()
 what does the method do?
+- Allows the user to clone all or one item in the list by a given amount of times to clone the item
 Is the return type an ArrayList
+- yes
 How does it add functionality to the cart class
+- allows user to clone entire list without having to make a duplicate object
 How many lines of code does it have
-
-
+- 7 lines
 
 Implement the classes in the given order
 */
@@ -424,7 +436,7 @@ class Cart {
     // additional method 1: 
     // applies a tariff to all items or one item; tariffFee must be >= 1, 
     // example) if fee is 25% --> 1.25
-    public ArrayList<OnlineItem> tariffList(boolean tariffAll, double tariffFee) {
+    public ArrayList<OnlineItem> tariffFee(boolean tariffAll, double tariffFee) {
         int currentListSize = getList().size();
         int randItem;
         Random rand = new Random();
@@ -525,8 +537,8 @@ class OnlineShoppingCartDriver {
                            "\nIt applies the given tariff fee to either all items in the list or one random item.\n");
 
         // Testing additional method #1: tariffList()
-        System.out.println("Applying tariff to all items with a tariff fee of 35% (1.35). tariffList(true, 1.35)");
-        c1.tariffList(true, 1.35);      
+        System.out.println("Applying tariff to all items with a tariff fee of 35% (1.35). tariffFee(true, 1.35)");
+        c1.tariffFee(true, 1.35);      
 
         // Display updated list
         System.out.println("Showing updated reciept ... using checkout() not toString()");
