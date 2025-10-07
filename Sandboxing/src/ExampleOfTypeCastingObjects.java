@@ -33,7 +33,7 @@ class TypeCastingDriver {
         Bitch bitch = new Beta();           // safe upcast, subclass to superclass
         System.out.println("\nCalling overrided superclass method from subclass:");
         bitch.stupidSentence();             // overrided superclass method
-        //bitch.redditSentence();           / doesn't work because bitch variable is of Bitch type, not Beta type
+        //bitch.redditSentence();           // doesn't work because bitch variable is of Bitch type, not Beta type
 
         System.out.println();
 

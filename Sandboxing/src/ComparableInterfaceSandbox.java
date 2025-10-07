@@ -35,13 +35,12 @@ class Car implements Comparable<Car> {
         return this.name;
     }
 
-
     @Override
-    public int compareTo(Car o) {
+    public int compareTo(Car o) {   
         int returnValue = 0;
 
         // Comparing only the name of car object
-        if(o instanceof Car) {
+        if(o instanceof Car) {          
             Car c = (Car) o;
 
             // if name matches, return 0
