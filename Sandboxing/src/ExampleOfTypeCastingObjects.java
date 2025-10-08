@@ -24,6 +24,9 @@ class Beta extends Bitch {
 
 class TypeCastingDriver {
     public static void main(String [] args) {
+        //Bitch b1 = new Bitch();
+        //((Beta)b1).stupidSentence();       // notice how you can't directly downcast from a Parent to a child class
+       
         Bitch b1tch = new Bitch();
 
         System.out.println(" === SANDBOX FOR REFERENCE TYPECASTING OBJECTS === \n");
