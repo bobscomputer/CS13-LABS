@@ -2,50 +2,50 @@ public class ExampleOfTypeCastingObjects {
 }
 
 // superclass
-class Bitch {
-    public void stupidSentence() {
+class Dog {
+    public void speak1() {
         System.out.println("Whats updog");
     }
 }
 
 // subclass
-class Beta extends Bitch {
+class Puppy extends Dog {
 
     @Override
-    public void stupidSentence() {
-        System.out.println("Whats deez dude");
+    public void speak1() {
+        System.out.println("Whats pup dude");
     }
 
-    public void redditSentence() {
-        System.out.println("Nobody understands me");
+    public void speak2() {
+        System.out.println("arf!");
     }
 }
 
 
 class TypeCastingDriver {
     public static void main(String [] args) {
-        //Bitch b1 = new Bitch();
-        //((Beta)b1).stupidSentence();       // notice how you can't directly downcast from a Parent to a child class
+        //Dog b1 = new Dog();
+        //((Puppy)b1).speak1();       // notice how you can't directly downcast from a Parent to a child class
        
-        Bitch b1tch = new Bitch();
+        Dog dog1 = new Dog();
 
         System.out.println(" === SANDBOX FOR REFERENCE TYPECASTING OBJECTS === \n");
         System.out.println("Before any reference typecasting, calling method from super/parent class:");
-        b1tch.stupidSentence();             // superclass method
+        dog1.speak1();                  // superclass method
 
-        Bitch bitch = new Beta();           // safe upcast, subclass to superclass
+        Dog dog = new Puppy();          // safe upcast, subclass to superclass
         System.out.println("\nCalling overrided superclass method from subclass:");
-        bitch.stupidSentence();             // overrided superclass method
-        //bitch.redditSentence();           // doesn't work because bitch variable is of Bitch type, not Beta type
+        dog.speak1();                   // overrided superclass method
+        //Dog.speak2();                 // doesn't work because Dog variable is of Dog type, not Puppy type
 
         System.out.println();
 
         System.out.println("Downcast example. Calling unique subclass method after downcasting:");
         // downcast example
-        if (bitch instanceof Beta) {        // is the obj variable a type of Beta? Beta class is a type of Bitch, bitch is of the Bitch class, so returns true
-            Beta beta = (Beta) bitch;       // safe to downcast, "I promise this variable is of Beta type" therefore, it can refer to beta variable
-            beta.redditSentence();
-            //bitch.redditSentence();       // doesn't work because bitch variable is of Bitch type, not Beta type
+        if (dog instanceof Puppy) {        // is the obj variable a type of Puppy? Puppy class is a type of Dog, Dog is of the Dog class, so returns true
+            Puppy Puppy = (Puppy) dog;     // safe to downcast, "I promise this variable is of Puppy type" therefore, it can refer to Puppy variable
+            Puppy.speak2();
+            //Dog.speak2();                // doesn't work because Dog variable is of Dog type, not Puppy type
         }
 
         System.out.println("\n===================================================");
