@@ -18,15 +18,67 @@ DO NOT DELETE ANY OF THE GIVEN COMMENTS
 */
 import java.util.Scanner;
  
-public class RefinCastro // must change this name to include your last name
+public class RefinCastro
 {
   // no code here
 }
 
-/* Must List all the attributes for a valid address*/ 
-class Address {
-    
- 
+class Address implements Comparable<String> {
+   // instance variables
+   String name;
+   int zipcode;
+
+   // constructor
+   public Address(String name, int zipcode) {
+       this.name = name;
+       this.zipcode = zipcode;
+   }
+
+   // getters
+   public String getName() {
+       return name;
+   } 
+
+   public int getZipcode() {
+       return zipcode;
+   } 
+
+   // setters
+   public void setName(String name) {
+       this.name = name;
+   }
+
+   public void setZipcode(int zipcode) {
+       this.zipcode = zipcode;
+   }
+   
+   @Override
+   // compares 2 street addresses, returns an int val
+   // returns 1 if the object's name is alphabetically after the arg's name
+   // returns -1 if the object's name is alphabetically before the arg's name
+   // returns 0 if the object's name is equal to the arg's name
+   public int compareTo(String o) {
+       return (this.name).compareTo(o);
+   }
+
+   // compares name and zipcode, returns a boolean val
+   public boolean equals(Object o) {
+       boolean sameAddress = false;
+
+       // type cast into proper class type
+       Address a = (Address) o;
+       if( (this.name.equals(a.name)) && ((this.zipcode) == a.getZipcode()) ) {
+           sameAddress = true;
+       }
+
+       return sameAddress;
+   }
+
+   // string of address' attributes
+   public String toString() {
+       return String.format("%nZipcode: %d %nAddress: %s", getZipcode(), getName());
+   }
+
 }
 //must change the line below to : class property implements Comparable 
 class Property implements Comparable<Object> {
@@ -47,7 +99,7 @@ class Property implements Comparable<Object> {
         this.rooms = rooms;
         this.baths = baths;
         this.sf = sf;
-        address = new Address();    // idk if this is right
+        this.address = address;    
         this.price = price;
         this.isAvailable = isAvailable;
         this.lotSize = lotSize;
@@ -161,8 +213,19 @@ class Property implements Comparable<Object> {
         return comparisonInt;
     }
    
-    /* toString method: creates a String representing the atttributes of a property  */
+    // creates a string representing all Property attributes
+    public String toString() {
+        String borderFmt = "=".repeat(25);
 
+        return "\n" + borderFmt + 
+               String.format("%nRooms: %d" + 
+                             "%nBaths: %d" + 
+                             "%nSquare Feet: %.1f" + 
+                             "%nPrice: $%,.2f" + 
+                             getAddress().toString(), 
+                             getRooms(), getBaths(), getSf(), getPrice()) 
+                             + "\n" + borderFmt;
+    }
 }
 
 /*The ListNode class is given*/
@@ -321,8 +384,16 @@ class YourDriver
       public static void main(String[] args)
       {
          Redfin properties = new Redfin();
+
+        //===================================================
+        // JUST TESTING IMPLEMENTED METHODS AS I GO
+        Address a1 = new Address("2543 Roblox Way", 123465);
+        Property p1 = new Property(4, 3, 10555.0, a1, 300777.99, false, 777, 2009);
+        System.out.println(p1.toString());
+        //===================================================
+
          //call the populate method to add properties to the list
-         populate(properties);
+         //populate(properties);        // UNCOMMENT AFTER TESTING!!!!!!!!!
          
          //use a whil loop 
             //display the options
@@ -347,6 +418,3 @@ class YourDriver
       
 
 }
-
-
- 
