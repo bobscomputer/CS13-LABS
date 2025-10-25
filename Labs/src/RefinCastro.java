@@ -257,6 +257,8 @@ class ListNode{
 }
 
 /*Extra feature: must add two extra methods to this List interface. */
+// Extra feature 1:  
+// Extra feature 2: 
 interface List{
    public void add(int rooms, int baths, double price, double sf, Address address, boolean isAvaiable, double lotSize,int yearBuilt);   
    public void add(int rooms, int baths,  double sf, Address address,double price, boolean isAvaiable, double lotSize,int yearBuilt,int index); 
@@ -273,50 +275,113 @@ interface List{
    
 }
 /*Must implement the new methods you added in the interface*/
+// Extra feature 1:  
+// Extra feature 2:
 class Redfin implements List
 {
    private ListNode head;
    public static int size = 0;
-	
+   
+   // constructors
    public Redfin() {
       head = null;
-      
    }
-  // constructor
+
    public Redfin(Property p) {
       head = new ListNode(p);
       size++;
    }
-   /*adds a house to the end of the end of the listlist */
+   // adds a property to the end of the list 
    public void add(int rooms, int baths, double price, double sf, Address address, boolean isAvaiable, double lotSize,int yearBuilt)
    {
-   
-     //your code
-   
+       // make a new property object with the given parameters
+       Property a = new Property(rooms, baths, sf, address, price, isAvaiable, lotSize, yearBuilt);
+       
+       // make a copy of the head node
+       ListNode curr = head;
+
+       if(curr == null) {
+           head = new ListNode(a);
+           size++;
+           return;  // to get out of the method
+       }
+    
+       // adding to an exisiting node with a size > 0
+       else {
+           ListNode newNode = new ListNode(a);
+           // locate the last node, which will have a null pointer 
+           while(curr.getNext() != null) {
+              curr = curr.getNext();
+           }
+           // set the current last node to point to the new last node
+           curr.setNext(newNode);   
+           size++;      
+       }
    }
    
-   /*add a house to the list at the given index*/
+   // add a house to the list at the given index
    public void add(int rooms, int baths,  double sf, Address address,double price, boolean isAvaiable, double lotSize,int yearBuilt,int index)   {
-      //your code    	
+       // make a new property object with the given parameters
+       Property a = new Property(rooms, baths, sf, address, price, isAvaiable, lotSize, yearBuilt);
+
+       // make a new node with the new property object
+       ListNode newNode = new ListNode(a);
+
+       if(index == 0) {
+            newNode.setNext(head);
+            head = newNode;
+            size++;
+            return;  // to get out of the method
+       }
+
+       else {
+           // make a copy of the head node
+           ListNode curr = head;
+
+           // traverse through list until node BEFORE the given index node is found
+           int i = 0;
+           while( (curr.getNext() != null ) && (i < index - 1) ) {
+               curr = curr.getNext();
+           }
+           
+           // insert the new node by setting the new node's next reference to the current node at the given index
+           newNode.setNext(curr.getNext());   
+           // then set the current node, which is at the index before the given index, next reference to the new node
+           curr.setNext(newNode);
+           size++;
+       }
    }
 
-/*removes a house from the list with the given address, returns true if the house was found and deleted*/
+   //removes a house from the list with the given address, returns true if the house was found and deleted*/
    public boolean remove(Address address)
    {
-      //your code
-     return false;
+       //your code
+       return false;
    }
 
-  /*returns the size of the list*/
-  	
+   // returns the size of the list 
    public int size()
    {
-      return  0;
+      return size;
    }
-/*returns a string with the list of all the houses*/
+
+   //returns a string with the list of all the houses
    public String toString() 
    {
-      return "";
+       String fmtString = "";
+       ListNode curr = head;
+
+       // if the list is empty, there is no data to display
+       if (head == null) {
+       }
+
+       // traverse through entire list and call the toString() of each property object
+       while(curr != null) {
+           fmtString += curr.getHouse().toString();
+           curr = curr.getNext();
+       }
+
+      return fmtString;
    }
       
    
