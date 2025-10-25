@@ -4,8 +4,8 @@ import java.util.LinkedList;
 
 class LinkyListSandbox {
     public static void main(String [] args) {
-        LinkedList listy = new LinkedList();
-        LinkedList listy2 = new LinkedList();
+        LinkedList<String> listy = new LinkedList<String>();
+        LinkedList<String> listy2 = new LinkedList<String>();
 
         listy.add("Spongebob");
         listy.add("Chad");
