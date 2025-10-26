@@ -427,7 +427,7 @@ class Redfin implements List {
         streetNum = Integer.toString(rand.nextInt(1000, 10000));
 
         // randomly generating and setting address attributes
-        randAddress.setName(streetNum + streetNames[rand.nextInt(4)]);
+        randAddress.setName(streetNum + streetNames[rand.nextInt(3)]);
         randAddress.setZipcode(Integer.toString(rand.nextInt(100000, 1000000)) );
 
         // randomly generating and setting property attributes
@@ -719,6 +719,7 @@ class YourDriver {
 
         // just test code !!!!!!!
         populate(properties);
+        System.out.println(properties.toString());
 
         // ===================================================
         // JUST TESTING IMPLEMENTED METHODS AS I GO
@@ -759,11 +760,10 @@ class YourDriver {
 
         // testing search for zipcodes
         System.out.printf("%nList of property objects with matching zipcodes: %s", redfin.search("123465")); // works ")"
-
         // ===================================================
 
         // call the populate method to add properties to the list
-        // populate(properties); // UNCOMMENT AFTER TESTING!!!!!!!!!
+        // populate(properties); 
 
         // use a whil loop
         // display the options
@@ -788,24 +788,18 @@ class YourDriver {
         Address a2 = new Address("5678 Fortnite Avenue", "789012");
         Address a3 = new Address("9012 Minecraft Street", "345678");
         Address a4 = new Address("3456 Stardew Way", "901234");
-        Address a5 = new Address("7890 Persona Road", "567890");
-        Address a6 = new Address("0001 Terraria Avenue", "111111");
-        Address a7 = new Address("0002 Peak Street", "222222");
 
         Property p1 = new Property(1, 2, 10000.99, a1, 1000.0, false, 100, 2000);
         Property p2 = new Property(2, 3, 20000.99, a2, 2000.0, true, 200, 2001);
         Property p3 = new Property(3, 4, 30000.99, a3, 3000.0, false, 300, 2002);
         Property p4 = new Property(4, 5, 40000.99, a4, 4000.0, true, 400, 2003);
-        Property p5 = new Property(5, 6, 50000.99, a5, 5000.0, false, 500, 2004);
-        Property p6 = new Property(6, 7, 60000.99, a6, 6000.0, true, 600, 2005);
-        Property p7 = new Property(7, 8, 70000.99, a7, 7000.0, false, 700, 2006);
 
         properties.add(p1);
         properties.add(p2);
         properties.add(p3);
         properties.add(p4);
-        properties.add(p5);
-        properties.add(p6);
+        properties.add(rand);
+        properties.add(rand);
         properties.add(rand);
     }
 
