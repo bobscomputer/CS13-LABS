@@ -750,80 +750,76 @@ class YourDriver {
             System.out.print("\nSelect an option: ");
             input = scan.nextLine();
 
-            switch (input) {
+            // Option 1, Add a randomly generated property to the end of the list
+            if(input.equals("1")) {
+                // code here
+            }
+
+            // Option 2, Add a custom amount of randomly generated properties to the end of the list
+            else if(input.equals("2")) {
+                // code here
+            }
+
+            // Option 3, Remove a property with a given address
+            else if(input.equals("3")) {
+                // code here
+            }
+
+            // Option 4, Display the size of the list
+            else if(input.equals("4")) {
+                // code here
+            }
+
+            // Option 5, Display the size of the list
+            else if(input.equals("5")) {
+                // code here
+            }
             
-            // Option 1, ...
-            case "1":
+            // Option 6, Search for all properties with a given amount of rooms
+            else if(input.equals("6")) {
                 // code here
-                break;
+            }
 
-            // Option 2, ...
-            case "2":
+            // Option 7, Search for all properties with a given amount of rooms and baths
+            else if(input.equals("7")) {
                 // code here
-                break;
+            }
 
-            // Option 3, ...
-            case "3":
+            // Option 8, Search for all properties with a given zipcode
+            else if(input.equals("8")) {
                 // code here
-                break;
+            }
 
-            // Option 4, ...
-            case "4":
+            // Option 9, Search for all properties within the given range [a, b] (where a & b are positive and rational or irrational numbers)
+            else if(input.equals("9")) {
                 // code here
-                break;
+            }
 
-            // Option 5, ...
-            case "5":
+            // Option 10, Search for all properties with a given address
+            else if(input.equals("10")) {
                 // code here
-                break;
-            
-            // Option 6, ...
-            case "6":
-                // code here
-                break;
+            }
 
-            // Option 7, ...
-            case "7":
+            // Option 11, Search for all properties built during a given year
+            else if(input.equals("11")) {
                 // code here
-                break;
+            }
 
-            // Option 8, ...
-            case "8":
+            // Option 12, Dispay all properties that are currently on the market
+            else if(input.equals("12")) {
                 // code here
-                break;
-
-            // Option 9, ...
-            case "9":
-                // code here
-                break;
-
-            // Option 10, ...
-            case "10":
-                // code here
-                break;
-
-            // Option 11, ...
-            case "11":
-                // code here
-                break;
-
-            // Option 12, ...
-            case "12":
-                // code here
-                break;
+            }
 
             // User entered 'Q' or q to Quit
-            case "Q":
-            case "q":
+            else if( (input.equals("Q")) || (input.equals("q")) ) {
                 scan.close();
-                System.out.println("\nQuitting application... \nHave a nice day!");
                 userQuit = true;
-                break;
-                
+                System.out.println("\nQuitting application... \nHave a nice day!");
+            }
+            
             // Unrecognized option. Reprompt until a valid option is entered
-            default: 
-                System.out.printf("%nUnrecognized option: %s, please try again.", input);
-                break;
+            else {
+                System.out.printf("%nUnrecognized option: %s, please try again.", input);            
             }
         }
          
