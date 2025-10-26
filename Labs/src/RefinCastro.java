@@ -326,8 +326,9 @@ interface List {
 }
 
 /* Must implement the new methods you added in the interface */
-// Extra feature 1: additional add() method which adds a property to the end of the list with given property object 
+// Extra feature 1: additional add(Property property) method which adds a property to the end of the list with given property object 
 // Extra feature 2: additional add() method which randomly generates values for a property object and adds to the end of the list
+// Extra feature 3: additional add(int n) adds a certain amount of randomly generated properties from given integer to the end of the list
 class Redfin implements List {
     private ListNode head;
     public static int size = 0;
