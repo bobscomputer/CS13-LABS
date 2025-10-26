@@ -2,17 +2,30 @@ import java.util.*;
 /*
 
 MUST COMPLETE THE COMMENTS BELOW
-Name:
+Name: Lynn Castro
 Description
-Date:
+Date: 10-26-25
 Self grade: self grade without an explanation will get 0/5
+---------------------------------------------
+TOTAL SELF GRADE SCORE: 84/100
+
+EXPLANATIONS...
+Proper naming: Most methods and variables have thoughtful and descriptive names. 
+               Some of my variables are a little long or are short because they hold inputs (4/5)
+
+Indentation: My code is organized and indented by at least 4 spaces. (5/5)
+Comments: All of the logic is preceded with a comment. (5/5)
+Program compiles: program compiles in JGRASP 25/25
+Program runs and matches provided output: There are minor differences in my output because I implemented my methods differently. (20/25)
+Requirements: I found it difficult to adapt 2 interface methods to work with the driver class menu.
+              In total I changed 2 methods using an Address object for the parameter to a String. 
+              I was able to implement all methods without changing the parameters, 
+              but I had difficulty with some methods not working well with my driver class option menu (20/25)
+Self grade: a self-grade is provided (5/5)
+---------------------------------------------
+
 testimony: I have written the code by myself and did not use unauthorized resourse. 
-
-  
- 
- 
-
-I am aware that If the instructor finds that the submitted code is from previos semester, I will get zero points for it.Name________
+I am aware that If the instructor finds that the submitted code is from previos semester, I will get zero points for it.Name Lynn Castro
 
 DO NOT DELETE ANY OF THE GIVEN COMMENTS
 */
@@ -58,9 +71,7 @@ class Address implements Comparable<String> {
 
     @Override
     // compares 2 street addresses, returns an int val
-    // returns 1 if the object's name is alphabetically after the arg's name
-    // returns -1 if the object's name is alphabetically before the arg's name
-    // returns 0 if the object's name is equal to the arg's name
+    // -1 alphabetically before, 1 alphabetically after, 0 equal/same
     public int compareTo(String o) {
         return (this.name).compareTo(o);
     }
@@ -233,8 +244,9 @@ class Property implements Comparable<Object> {
                         "%nBaths: %d" +
                         "%nSquare Feet: %.1f" +
                         "%nPrice: $%,.2f" +
+                        "%nYear built: %d" +
                         getAddress().toString(),
-                        getRooms(), getBaths(), getSf(), getPrice())
+                        getRooms(), getBaths(), getSf(), getPrice(), getYearBuilt())
                 + "\n" + borderFmt;
     }
 }
@@ -291,7 +303,7 @@ interface List {
     // Extra feature 3: adds a certain amount of randomly generated properties from given integer to the end of the list
     public void add(int n);
 
-    public boolean remove(Address address);
+    public boolean remove(String address); // changed from object Address to string
 
     public int size();
 
@@ -305,7 +317,7 @@ interface List {
 
     public ArrayList<Property> search(double p1, double p2);
 
-    public Property search(Address address);
+    public Property search(String address, String zipcode); // changed from object Address to string address, string zipcode
 
     public ArrayList<Property> searchYearBuilt(int year);
 
@@ -429,7 +441,7 @@ class Redfin implements List {
         String streetNum;
 
         // initializations 
-        String[] streetNames = {" Street", " Road", " Avenue"};
+        String[] streetNames = {" Street (RANDOM)", " Road (RANDOM)", " Avenue (RANDOM)"};
         streetNum = Integer.toString(rand.nextInt(1000, 10000));
 
         // randomly generating and setting address attributes
@@ -477,29 +489,43 @@ class Redfin implements List {
     
     // removes a house from the list with the given address, 
     // returns true if the house was found and deleted
-    public boolean remove(Address address) {
+    public boolean remove(String address) {
         boolean removedAddress = false;        
-        int index = 0;
 
         // if there is nothing in the list, there is nothing to remove
-        if (head == null) {
+        if(head == null) {
         }
 
+        // remove first node
+        else if(head.getHouse().getAddress().getName().equals(address)) {
+            head = head.getNext();
+            removedAddress = true;
+        }
+
+        ListNode pre = head;
+        ListNode curr = head;
+        // iterate through list, update pre and curr node positions
+        while( (curr != null) && !(curr.getHouse().getAddress().getName().equals(address)) ) {
+            pre = curr;
+            curr = curr.getNext();
+        }
+
+        // remove last node
+        if( (curr != null) && (curr.getNext() == null) && (curr.getHouse().getAddress().getName().equals(address)) ) {
+            pre.setNext(null);
+            size--;
+            removedAddress = true;
+        }
+
+        // address name not found in list
+        else if(curr == null) {
+        }
+
+        // remove node in the middle of list
         else {
-        // search through each node
-            while ( (head != null) && (index < size) ) {
-                ListNode prev = head;
-                ListNode curr = head.getNext();
-                // if the next node is the matching address, then change the references
-                if (curr.getHouse().equals(address)) {
-                    prev.setNext(curr.getNext()); // previous skips to next
-                    curr.setNext(null);   // remove the next node, make it null
-                    size--;
-                    removedAddress = true;
-                }
-                prev = prev.getNext();
-                index++;
-            }
+            pre.setNext(curr.getNext());
+            size--;
+            removedAddress = true;
         }
 
         return removedAddress;
@@ -618,7 +644,7 @@ class Redfin implements List {
             // iterate through all nodes
             while( (curr != null) && (index < size) ) {
                 // check each node's property object for prices with the range of the parameters, then add to list
-                if( (curr.getHouse().getPrice() >= p1) && (curr.getHouse().getPrice() <= p2) ) {
+                if( (curr.getHouse().getPrice() >= p1) || (curr.getHouse().getPrice() <= p2) ) {
                     priceArrayList.add(curr.getHouse());
                 }
                 curr = curr.getNext();
@@ -628,12 +654,12 @@ class Redfin implements List {
         return priceArrayList; 
     }
 
-    // returns the property object with the given address
-    public Property search(Address address) {
+    // returns the property object with the given address and zipcode
+    public Property search(String name, String zipcode) {
         boolean foundAddress = false;
-        int index = 0;
         ListNode curr = head;
 
+        
         // check if head node is null
         if(head == null) {
         }
@@ -641,14 +667,13 @@ class Redfin implements List {
         // head node is not null, begin searching 
         else {
             // iterate through all nodes
-            while( (curr != null) && (index < size) && (foundAddress == false)) {
+            while( (curr.getNext() != null) && (curr != null) && (foundAddress == false)) {
                 // check each node's property object for the address from the parameter
-                if(curr.getHouse().getAddress().equals(address)) {
+                if( (curr.getHouse().getAddress().getName().equals(name)) && (curr.getHouse().getAddress().getZipcode().equals(zipcode)) ) {
                     // found matching address and its node, exit out of loop
                     foundAddress = true;
                 }
                 curr = curr.getNext();
-                index++;
             }
         }
         return curr.getHouse(); 
@@ -657,23 +682,21 @@ class Redfin implements List {
     // creates a list of all houses within a given price range, excluding the given parameters
     public ArrayList<Property> search(double p1, double p2) {
         ArrayList<Property> priceArrayList = new ArrayList<>();
-        int index = 0;
         ListNode curr = head;
 
         // check if head node is null
         if(head == null) {
         }
-        
+
         // head node is not null, begin searching 
         else {
             // iterate through all nodes
-            while( (curr != null) && (index < size) ) {
+            while( (curr != null) ) {
                 // check each node's property object for prices with the range of the parameters, then add to list
-                if( (curr.getHouse().getPrice() > p1) && (curr.getHouse().getPrice() < p2) ) {
+                if( (curr.getHouse().getPrice() >= p1) || (curr.getHouse().getPrice() <= p2) ) {
                     priceArrayList.add(curr.getHouse());
                 }
                 curr = curr.getNext();
-                index++;
             }
         }
         return priceArrayList;
@@ -742,72 +765,156 @@ class YourDriver {
         String input;
         boolean userQuit = false;
 
-        //call the populate method to add properties to the list
+        // call the populate method to add properties to the list
         populate(properties);
 
-        optionsDisplay();
         while(userQuit != true) {
-            System.out.print("\nSelect an option: ");
+            optionsDisplay();
+            System.out.print("\n\nSelect an option: ");
             input = scan.nextLine();
 
             // Option 1, Add a randomly generated property to the end of the list
             if(input.equals("1")) {
-                // code here
+                // notify user that add() method is being called
+                System.out.println("Creating a randomly generated property...\nAdding new property to the end of the list...");
+                properties.add();
+
+                // display new list
+                System.out.println("Displaying new list...");
+                System.out.println(properties);
             }
 
             // Option 2, Add a custom amount of randomly generated properties to the end of the list
             else if(input.equals("2")) {
-                // code here
+                int n;
+
+                // prompt for amount of properties to generate
+                System.out.print("Enter amount of randomly generated properties to create & add: ");
+
+                n = Integer.parseInt(scan.nextLine());
+                // reprompt if negative value
+                while(n < 0) {
+                    System.out.print("Plese enter a positive value: ");
+                    n = Integer.parseInt(scan.nextLine());
+                }
+
+                // not negative, call add(int n)
+                properties.add(n);
+                System.out.println("Creating randomly generated properties...\nAdding new properties to the end of the list...");
+            
+                // display new list
+                System.out.println("Displaying new list...");
+                System.out.println(properties);
             }
 
-            // Option 3, Remove a property with a given address
+            // Option 3, Remove a property with a given address 
             else if(input.equals("3")) {
-                // code here
+                String name;
+                System.out.print("Enter address name to be removed (just address name, not with zipcode): ");
+                //name = scan.nextLine();
+
+                // remove object if found and display new list
+                properties.remove(scan.nextLine());
+                //System.out.printf("%nAddress object found? '%s' If true, deleteing object...", properties.remove(name));
+                System.out.println(properties);
             }
 
             // Option 4, Display the size of the list
             else if(input.equals("4")) {
-                // code here
+                System.out.printf("%nSize of the current list is: %d elements %n", properties.size());
             }
 
-            // Option 5, Display the size of the list
+            // Option 5, Display all houses/properties in the list
             else if(input.equals("5")) {
-                // code here
+                System.out.println(properties);
             }
             
             // Option 6, Search for all properties with a given amount of rooms
             else if(input.equals("6")) {
-                // code here
+                int n;
+
+                // prompt user for inputs
+                System.out.print("Enter number of rooms: ");
+                n = Integer.parseInt(scan.nextLine());
+
+                // display all properties with matching number of rooms
+                System.out.println(properties.search(n));
             }
 
             // Option 7, Search for all properties with a given amount of rooms and baths
             else if(input.equals("7")) {
-                // code here
+                int n;
+                int k;
+
+                // prompt user for inputs
+                System.out.print("Enter number of rooms: ");
+                n = Integer.parseInt(scan.nextLine());
+                System.out.print("Enter number of baths: ");
+                k = Integer.parseInt(scan.nextLine());
+                
+
+                // display all properties with matching number of rooms
+                System.out.println(properties.search(n, k));
             }
 
             // Option 8, Search for all properties with a given zipcode
             else if(input.equals("8")) {
-                // code here
+                String zp;
+
+                // prompt user for input
+                System.out.print("Enter zipcode: ");
+                zp = scan.nextLine();
+
+                // display all properties with matching zipcode
+                System.out.println(properties.search(zp));
             }
 
             // Option 9, Search for all properties within the given range [a, b] (where a & b are positive and rational or irrational numbers)
             else if(input.equals("9")) {
-                // code here
+                double a;
+                double b;
+
+                // prompt user for inputs
+                System.out.print("Enter minimum range value: ");
+                a = Double.parseDouble(scan.nextLine());
+                System.out.print("Enter maximum range value: ");
+                b = Double.parseDouble(scan.nextLine());
+
+                // display all properties within the given range [a,b]
+                System.out.println(properties.search(a, b));
             }
 
-            // Option 10, Search for all properties with a given address
+            // Option 10, Search for all properties with a given address 
             else if(input.equals("10")) {
-                // code here
+                String name;
+                String zp;
+                
+                // prompt user for inputs
+                System.out.print("Enter street name (not including zipcode): ");
+                name = scan.nextLine();
+                System.out.print("Enter zipcode: ");
+                zp = scan.nextLine();
+
+                // display all properties with given address and zipcode
+                System.out.println(properties.search(name, zp));
+
             }
 
             // Option 11, Search for all properties built during a given year
             else if(input.equals("11")) {
-                // code here
+                int year;
+
+                // prompt user for input
+                System.out.print("Enter a year: ");
+                year = Integer.parseInt(scan.nextLine());
+
+                // display properties with matching year built
+                System.out.println(properties.searchYearBuilt(year));
             }
 
             // Option 12, Dispay all properties that are currently on the market
             else if(input.equals("12")) {
-                // code here
+                System.out.println(properties.isAvailable());
             }
 
             // User entered 'Q' or q to Quit
@@ -822,47 +929,39 @@ class YourDriver {
                 System.out.printf("%nUnrecognized option: %s, please try again.", input);            
             }
         }
-         
-         //use a while loop 
-            //display the options
-            //prompt the user to select an option
-            //based on the selected option call the proper method from the Redfin class(must have 12 different conditions
-            //display the result for each option selected
-
-        
-    
     }
 
-    /*
-     * This method fills in the list by creating the Property objects, adding it to
-     * the list houses
-     * refer to the document
-     * Create 7 different propery object and add it to the list called properties
-     */
+    // fills given list with property objects
     public static void populate(Redfin properties) {
-        Address a1 = new Address("1234 Roblox Road", "123456");
+        Address a1 = new Address("1234 Roblox Road", "123456");    
         Address a2 = new Address("5678 Fortnite Avenue", "789012");
         Address a3 = new Address("9012 Minecraft Street", "345678");
         Address a4 = new Address("3456 Stardew Way", "901234");
+        Address a5 = new Address("7890 Persona Road", "567890");
+        Address a6 = new Address("0001 Terraria Avenue", "111111");
+        Address a7 = new Address("0002 Peak Street", "222222");
 
         Property p1 = new Property(1, 2, 10000.99, a1, 1000.0, false, 100, 2000);
         Property p2 = new Property(2, 3, 20000.99, a2, 2000.0, true, 200, 2001);
         Property p3 = new Property(3, 4, 30000.99, a3, 3000.0, false, 300, 2002);
         Property p4 = new Property(4, 5, 40000.99, a4, 4000.0, true, 400, 2003);
+        Property p5 = new Property(5, 6, 50000.99, a5, 5000.0, false, 500, 2004);
+        Property p6 = new Property(6, 7, 60000.99, a6, 6000.0, true, 600, 2005);
+        Property p7 = new Property(7, 8, 70000.99, a7, 7000.0, false, 700, 2006);
 
         properties.add(p1);
         properties.add(p2);
         properties.add(p3);
         properties.add(p4);
-        properties.add();
-        properties.add();
-        properties.add();
+        properties.add(p5);
+        properties.add(p6);
+        properties.add(p7);
     }
 
-    /* This method displays the 12 options to the user */
+    // displays 12 menu options
     public static void optionsDisplay() {
         System.out.printf("Enter [1-12] to select the following options OR enter 'Q' or 'q' to exit the program. %n" +
-                          "%n[1]  (ADDITIONAL METHOD 2) Add a randomly generated property to the end of the list" + 
+                          "%n[1]  (ADDITIONAL METHOD 2) Add a randomly generated property to the end of the list. Property is marked as (RANDOM) in address name" + 
                           "%n[2]  (ADDITIONAL METHOD 3) Add a custom amount of randomly generated properties to the end of the list" + 
                           "%n[3]  Remove a property with a given address" + 
                           "%n[4]  Display the size of the list" + 
@@ -870,9 +969,9 @@ class YourDriver {
                           "%n[6]  Search for all properties with a given amount of rooms" + 
                           "%n[7]  Search for all properties with a given amount of rooms and baths" + 
                           "%n[8]  Search for all properties with a given zipcode" + 
-                          "%n[9]  Search for all properties within the given range [a, b] (where a & b are positive and rational or irrational numbers)" + 
-                          "%n[10] Search for all properties with a given address" + 
+                          "%n[9]  Search for all properties within the given price range [a, b] (where a & b are positive and rational or irrational numbers)" + 
+                          "%n[10] Search for all properties with a given address & zipcode" + 
                           "%n[11] Search for all properties built during a given year" + 
-                          "%n[12] Dispay all properties that are currently on the market");
+                          "%n[12] Display all properties that are currently on the market");
     }
 }
