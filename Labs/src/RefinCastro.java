@@ -273,6 +273,8 @@ class ListNode {
 /* Extra feature: must add two extra methods to this List interface. */
 // Extra feature 1: additional add() method 
 // Extra feature 2: additional add() method
+// Extra feature 3: searches for properties with same given zipcode and year built
+
 interface List {
     public void add(int rooms, int baths, double price, double sf, Address address, boolean isAvaiable, double lotSize,
             int yearBuilt);
@@ -284,8 +286,11 @@ interface List {
     public void add(Property property);
 
     // Extra feature 2: additional add() method which randomly generates values for a property object and adds to the end of the list
-    public void add(Random rand);
-    
+    public void add();
+
+    // Extra feature 3: adds a certain amount of randomly generated properties from given integer to the end of the list
+    public void add(int n);
+
     public boolean remove(Address address);
 
     public int size();
@@ -414,9 +419,10 @@ class Redfin implements List {
     }
 
     // Extra feature 2: additional add() method which randomly generates values for a property object and adds to the end of the list
-    public void add(Random rand) {
+    public void add() {
 
         // instance variables
+        Random rand = new Random();
         Property randProperty = new Property();
         Address randAddress = new Address();
         int randNum;
@@ -452,6 +458,21 @@ class Redfin implements List {
 
         // add the randomly generated object into the list
         add(randProperty);
+    }
+
+    // Extra feature 3, add a random amount of custom properties to the end of the list from given int arg
+    public void add(int n) {
+        // avoid negative values
+        if(n < 0) {
+            System.out.printf("%nYou entered a negative value: %d. Please enter a postive value. %nExiting...", n);
+        }
+        // not a negative value
+        else {
+            // create a random generated property the given amount of times and add them to the end of the list
+            for(int i=0; i<n; i++) {
+                add();
+            }
+        }
     }
     
     // removes a house from the list with the given address, 
@@ -715,63 +736,105 @@ class Redfin implements List {
  */
 class YourDriver {
     public static void main(String[] args) {
+        // Instance variables
         Redfin properties = new Redfin();
+        Scanner scan = new Scanner(System.in);
+        String input;
+        boolean userQuit = false;
 
-        // just test code !!!!!!!
+        //call the populate method to add properties to the list
         populate(properties);
-        System.out.println(properties.toString());
 
-        // ===================================================
-        // JUST TESTING IMPLEMENTED METHODS AS I GO
-        Address a1 = new Address("2543 Roblox Way", "123465");
-        Address a2 = new Address("1234 Minecraft Way", "123465");
-        Address a3 = new Address("1224 Fortnite Way", "123465");
-        Address a4 = new Address("1224 Persona Way", "123465");
+        optionsDisplay();
+        while(userQuit != true) {
+            System.out.print("\nSelect an option: ");
+            input = scan.nextLine();
 
-        Property p1 = new Property(4, 3, 10555.0, a1, 300777.99, false, 777, 2009);
-        //Property p2 = new Property(7, 2, 1075.0, a2, 1000.99, false, 25, 2010);
+            switch (input) {
+            
+            // Option 1, ...
+            case "1":
+                // code here
+                break;
 
-        Redfin redfin = new Redfin(p1);
+            // Option 2, ...
+            case "2":
+                // code here
+                break;
 
-        // -----------------------------------------------------
-        // Testing Redfin methods
+            // Option 3, ...
+            case "3":
+                // code here
+                break;
 
-        // testing add(), 2 versions 
-        //redfin.add(7, 2, 599.99, 300.0, a4, true, 47, 2020);  // works for adding a new node to the front :)
-        redfin.add(4, 2, 1075.0, a2, 1000.99, false, 25, 2010, 1);  // works @ a given index:)
-        System.out.println(redfin.toString()); 
+            // Option 4, ...
+            case "4":
+                // code here
+                break;
 
-        // testing size
-        System.out.println("size of list: " + redfin.size());
+            // Option 5, ...
+            case "5":
+                // code here
+                break;
+            
+            // Option 6, ...
+            case "6":
+                // code here
+                break;
 
-        // testing remove
-        //redfin.remove(a2);  // works :)
-        System.out.println(redfin.remove(a3) + "\n" + redfin.toString()); // trying to remove an address  not in the list works :) returns false 
+            // Option 7, ...
+            case "7":
+                // code here
+                break;
 
-        // testing size, again
-        System.out.println("size of list: " + redfin.size());
+            // Option 8, ...
+            case "8":
+                // code here
+                break;
 
-        // testing search for matching rooms
-        System.out.printf("%nList of property objects with matching rooms: %s", redfin.search(4));   // works :)
-        System.out.println();
+            // Option 9, ...
+            case "9":
+                // code here
+                break;
 
-        // testing search for rooms and baths
-        System.out.printf("%nList of property objects with matching rooms and baths: %s", redfin.search(4, 3)); // works :) 
+            // Option 10, ...
+            case "10":
+                // code here
+                break;
 
-        // testing search for zipcodes
-        System.out.printf("%nList of property objects with matching zipcodes: %s", redfin.search("123465")); // works ")"
-        // ===================================================
+            // Option 11, ...
+            case "11":
+                // code here
+                break;
 
-        // call the populate method to add properties to the list
-        // populate(properties); 
+            // Option 12, ...
+            case "12":
+                // code here
+                break;
 
-        // use a whil loop
-        // display the options
-        // prompt the user to select an option
-        // based on the selected option call the proper method from the Redfin
-        // class(must have 12 different conditions
-        // display the result for each option selected
+            // User entered 'Q' or q to Quit
+            case "Q":
+            case "q":
+                scan.close();
+                System.out.println("\nQuitting application... \nHave a nice day!");
+                userQuit = true;
+                break;
+                
+            // Unrecognized option. Reprompt until a valid option is entered
+            default: 
+                System.out.printf("%nUnrecognized option: %s, please try again.", input);
+                break;
+            }
+        }
+         
+         //use a while loop 
+            //display the options
+            //prompt the user to select an option
+            //based on the selected option call the proper method from the Redfin class(must have 12 different conditions
+            //display the result for each option selected
 
+        
+    
     }
 
     /*
@@ -781,9 +844,6 @@ class YourDriver {
      * Create 7 different propery object and add it to the list called properties
      */
     public static void populate(Redfin properties) {
-        // For extra feature #2
-        Random rand = new Random();
-
         Address a1 = new Address("1234 Roblox Road", "123456");
         Address a2 = new Address("5678 Fortnite Avenue", "789012");
         Address a3 = new Address("9012 Minecraft Street", "345678");
@@ -798,12 +858,25 @@ class YourDriver {
         properties.add(p2);
         properties.add(p3);
         properties.add(p4);
-        properties.add(rand);
-        properties.add(rand);
-        properties.add(rand);
+        properties.add();
+        properties.add();
+        properties.add();
     }
 
     /* This method displays the 12 options to the user */
-    public static void menu() {
+    public static void optionsDisplay() {
+        System.out.printf("Enter [1-12] to select the following options OR enter 'Q' or 'q' to exit the program. %n" +
+                          "%n[1]  (ADDITIONAL METHOD 2) Add a randomly generated property to the end of the list" + 
+                          "%n[2]  (ADDITIONAL METHOD 3) Add a custom amount of randomly generated properties to the end of the list" + 
+                          "%n[3]  Remove a property with a given address" + 
+                          "%n[4]  Display the size of the list" + 
+                          "%n[5]  Display all houses/properties in the list" + 
+                          "%n[6]  Search for all properties with a given amount of rooms" + 
+                          "%n[7]  Search for all properties with a given amount of rooms and baths" + 
+                          "%n[8]  Search for all properties with a given zipcode" + 
+                          "%n[9]  Search for all properties within the given range [a, b] (where a & b are positive and rational or irrational numbers)" + 
+                          "%n[10] Search for all properties with a given address" + 
+                          "%n[11] Search for all properties built during a given year" + 
+                          "%n[12] Dispay all properties that are currently on the market");
     }
 }
