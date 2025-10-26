@@ -27,7 +27,12 @@ class Address implements Comparable<String> {
     String name;
     String zipcode;
 
-    // constructor
+    // constructors
+
+    // empty constructor for extra feature #2
+    public Address() {
+    }
+
     public Address(String name, String zipcode) {
         this.name = name;
         this.zipcode = zipcode;
@@ -75,7 +80,7 @@ class Address implements Comparable<String> {
 
     // string of address' attributes
     public String toString() {
-        return String.format("%nZipcode: %d %nAddress: %s", getZipcode(), getName());
+        return String.format("%nZipcode: %s %nAddress: %s", getZipcode(), getName());
     }
 
 }
@@ -93,7 +98,12 @@ class Property implements Comparable<Object> {
     private double lotSize;
     private int yearBuilt;
 
-    // constructor:
+    // constructors:
+
+    // empty constructor for extra feature #2
+    public Property() {
+    }
+
     public Property(int rooms, int baths, double sf, Address address, double price,
             boolean isAvailable, double lotSize, int yearBuilt) {
         this.rooms = rooms;
@@ -261,8 +271,8 @@ class ListNode {
 }
 
 /* Extra feature: must add two extra methods to this List interface. */
-// Extra feature 1:
-// Extra feature 2:
+// Extra feature 1: additional add() method 
+// Extra feature 2: additional add() method
 interface List {
     public void add(int rooms, int baths, double price, double sf, Address address, boolean isAvaiable, double lotSize,
             int yearBuilt);
@@ -270,6 +280,12 @@ interface List {
     public void add(int rooms, int baths, double sf, Address address, double price, boolean isAvaiable, double lotSize,
             int yearBuilt, int index);
 
+    // Extra feature 1: additional add() method which adds a property to the end of the list with given property object 
+    public void add(Property property);
+
+    // Extra feature 2: additional add() method which randomly generates values for a property object and adds to the end of the list
+    public void add(Random rand);
+    
     public boolean remove(Address address);
 
     public int size();
@@ -288,13 +304,13 @@ interface List {
 
     public ArrayList<Property> searchYearBuilt(int year);
 
-    public ArrayList<Property> isAvaiable();
+    public ArrayList<Property> isAvailable();       // I fixed the typo from the original template
 
 }
 
 /* Must implement the new methods you added in the interface */
-// Extra feature 1:
-// Extra feature 2:
+// Extra feature 1: additional add() method which adds a property to the end of the list with given property object 
+// Extra feature 2: additional add() method which randomly generates values for a property object and adds to the end of the list
 class Redfin implements List {
     private ListNode head;
     public static int size = 0;
@@ -363,16 +379,81 @@ class Redfin implements List {
                 curr = curr.getNext();
             }
 
-            // insert the new node by setting the new node's next reference to the current
-            // node at the given index
+            // insert the new node by setting the new node's next reference to the current node at the given index
             newNode.setNext(curr.getNext());
-            // then set the current node, which is at the index before the given index, next
-            // reference to the new node
+            // then set the current node, which is at the index before the given index, next reference to the new node
             curr.setNext(newNode);
             size++;
         }
     }
 
+    // Extra feature 1: additional add() method which adds a property to the end of the list with given property object 
+    public void add(Property property) {
+
+        // make a copy of the head node
+        ListNode curr = head;
+
+        // check if current list node is null
+        if (curr == null) {
+            head = new ListNode(property);
+            size++;
+            return; // to get out of the method
+        }
+
+        // adding to an exisiting node with a size > 0
+        else {
+            ListNode newNode = new ListNode(property);
+            // locate the last node, which will have a null pointer
+            while (curr.getNext() != null) {
+                curr = curr.getNext();
+            }
+            // set the current last node to point to the new last node
+            curr.setNext(newNode);
+            size++;
+        }
+    }
+
+    // Extra feature 2: additional add() method which randomly generates values for a property object and adds to the end of the list
+    public void add(Random rand) {
+
+        // instance variables
+        Property randProperty = new Property();
+        Address randAddress = new Address();
+        int randNum;
+        String streetNum;
+
+        // initializations 
+        String[] streetNames = {" Street", " Road", " Avenue"};
+        streetNum = Integer.toString(rand.nextInt(1000, 10000));
+
+        // randomly generating and setting address attributes
+        randAddress.setName(streetNum + streetNames[rand.nextInt(4)]);
+        randAddress.setZipcode(Integer.toString(rand.nextInt(100000, 1000000)) );
+
+        // randomly generating and setting property attributes
+        randProperty.setRooms(rand.nextInt(1,10));
+        randProperty.setBaths(rand.nextInt(1,6));
+        randProperty.setPrice(rand.nextDouble(10000.0, 200000.0));
+        randProperty.setSf(rand.nextDouble(10000.0, 90000.0));
+        randProperty.setAddress(randAddress);
+        randProperty.setLotSize(rand.nextInt(100, 1000));
+        randProperty.setYearBuilt(rand.nextInt(2000, 2026));
+
+        // randomly setting boolean isAvailable value, if randNum is even = true, odd = false
+        randNum = rand.nextInt(11);
+        // even
+        if(randNum % 2 == 0) {
+            randProperty.setIsAvailable(true);
+        }
+        // odd
+        else {
+            randProperty.setIsAvailable(false);
+        }
+
+        // add the randomly generated object into the list
+        add(randProperty);
+    }
+    
     // removes a house from the list with the given address, 
     // returns true if the house was found and deleted
     public boolean remove(Address address) {
@@ -426,12 +507,7 @@ class Redfin implements List {
         return fmtString;
     }
 
-    /*
-     * this method searches the list to find all the houses with the given number of
-     * the rooms
-     * create an arraylist of all the houses and returns the arraylist
-     */
-
+    // searches the list for all houses with a given number of rooms
     public ArrayList<Property> search(int rooms) {
         ArrayList<Property> roomsArrayList = new ArrayList<>();
         int index = 0;
@@ -456,12 +532,7 @@ class Redfin implements List {
         return roomsArrayList; 
     }
 
-    /*
-     * searches the list to find all all the houses with the specific number of
-     * roooms and bath
-     * returns an Arraylist of houses
-     */
-
+    // searches the list for all houses with a given number of rooms and baths
     public ArrayList<Property> search(int rooms, int baths) {
         ArrayList<Property> rbArrayList = new ArrayList<>();
         int index = 0;
@@ -486,7 +557,7 @@ class Redfin implements List {
         return rbArrayList; 
     }
 
-    /* Searches the list to find all the houses at the given zipcode */
+    // searches the list for all houses at a given zipcode
     public ArrayList<Property> search(String zipcode) {
         ArrayList<Property> zpArrayList = new ArrayList<>();
         int index = 0;
@@ -511,29 +582,130 @@ class Redfin implements List {
         return zpArrayList; 
     }
 
-    /* returns the list of all the houses with the price range p1 and p2 */
+    // creates a list of all houses within a given price range, including the given parameters
     public ArrayList<Property> HouseRange(double p1, double p2) {
-        return null;
-    }
-    /* returns the house at the given address */
+        ArrayList<Property> priceArrayList = new ArrayList<>();
+        int index = 0;
+        ListNode curr = head;
 
+        // check if head node is null
+        if(head == null) {
+        }
+        
+        // head node is not null, begin searching 
+        else {
+            // iterate through all nodes
+            while( (curr != null) && (index < size) ) {
+                // check each node's property object for prices with the range of the parameters, then add to list
+                if( (curr.getHouse().getPrice() >= p1) && (curr.getHouse().getPrice() <= p2) ) {
+                    priceArrayList.add(curr.getHouse());
+                }
+                curr = curr.getNext();
+                index++;
+            }
+        }
+        return priceArrayList; 
+    }
+
+    // returns the property object with the given address
     public Property search(Address address) {
-        return null;
+        boolean foundAddress = false;
+        int index = 0;
+        ListNode curr = head;
+
+        // check if head node is null
+        if(head == null) {
+        }
+        
+        // head node is not null, begin searching 
+        else {
+            // iterate through all nodes
+            while( (curr != null) && (index < size) && (foundAddress == false)) {
+                // check each node's property object for the address from the parameter
+                if(curr.getHouse().getAddress().equals(address)) {
+                    // found matching address and its node, exit out of loop
+                    foundAddress = true;
+                }
+                curr = curr.getNext();
+                index++;
+            }
+        }
+        return curr.getHouse(); 
     }
 
-    /* returns the list of all the houses within the prcie range */
+    // creates a list of all houses within a given price range, excluding the given parameters
     public ArrayList<Property> search(double p1, double p2) {
-        return null;
+        ArrayList<Property> priceArrayList = new ArrayList<>();
+        int index = 0;
+        ListNode curr = head;
+
+        // check if head node is null
+        if(head == null) {
+        }
+        
+        // head node is not null, begin searching 
+        else {
+            // iterate through all nodes
+            while( (curr != null) && (index < size) ) {
+                // check each node's property object for prices with the range of the parameters, then add to list
+                if( (curr.getHouse().getPrice() > p1) && (curr.getHouse().getPrice() < p2) ) {
+                    priceArrayList.add(curr.getHouse());
+                }
+                curr = curr.getNext();
+                index++;
+            }
+        }
+        return priceArrayList;
     }
 
-    /* returns the list of all the houses built in a given year */
+    // creates a list of all houses built in a given year
     public ArrayList<Property> searchYearBuilt(int year) {
-        return null;
+        ArrayList<Property> houseArrayList = new ArrayList<>();
+        int index = 0;
+        ListNode curr = head;
+
+        // check if head node is null
+        if(head == null) {
+        }
+        
+        // head node is not null, begin searching 
+        else {
+            // iterate through all nodes
+            while( (curr != null) && (index < size) ) {
+                // check each node's property object for matching houses built in the given year
+                if(curr.getHouse().getYearBuilt() == year) {
+                    houseArrayList.add(curr.getHouse());
+                }
+                curr = curr.getNext();
+                index++;
+            }
+        }
+        return houseArrayList;
     }
 
-    /* returns the list of all the houses in the market */
-    public ArrayList<Property> isAvaiable() {
-        return null;
+    // creates a list of all houses that are available
+    public ArrayList<Property> isAvailable() {
+        ArrayList<Property> availableHomesArrayList = new ArrayList<>();
+        int index = 0;
+        ListNode curr = head;
+
+        // check if head node is null
+        if(head == null) {
+        }
+        
+        // head node is not null, begin searching 
+        else {
+            // iterate through all nodes
+            while( (curr != null) && (index < size) ) {
+                // check each node's property object for homes that are available (boolean = true)
+                if(curr.getHouse().getIsAvailable() == true) {
+                    availableHomesArrayList.add(curr.getHouse());
+                }
+                curr = curr.getNext();
+                index++;
+            }
+        }
+        return availableHomesArrayList;
     }
 }
 
@@ -544,6 +716,9 @@ class Redfin implements List {
 class YourDriver {
     public static void main(String[] args) {
         Redfin properties = new Redfin();
+
+        // just test code !!!!!!!
+        populate(properties);
 
         // ===================================================
         // JUST TESTING IMPLEMENTED METHODS AS I GO
@@ -576,16 +751,14 @@ class YourDriver {
         System.out.println("size of list: " + redfin.size());
 
         // testing search for matching rooms
-        System.out.printf("%nList of property objects with matching rooms: %s", redfin.search(4).toString());   // works :)
+        System.out.printf("%nList of property objects with matching rooms: %s", redfin.search(4));   // works :)
         System.out.println();
 
         // testing search for rooms and baths
-        System.out.printf("%nList of property objects with matching rooms and baths: %s", redfin.search(4, 3).toString()); // works :) 
+        System.out.printf("%nList of property objects with matching rooms and baths: %s", redfin.search(4, 3)); // works :) 
 
         // testing search for zipcodes
-        System.out.printf("%nList of property objects with matching zipcodes: %s", redfin.search("123465").toString());
-
-
+        System.out.printf("%nList of property objects with matching zipcodes: %s", redfin.search("123465")); // works ")"
 
         // ===================================================
 
@@ -602,14 +775,41 @@ class YourDriver {
     }
 
     /*
-     * This method fills in the list by creating the Property objects , ading it to
+     * This method fills in the list by creating the Property objects, adding it to
      * the list houses
      * refer to the document
      * Create 7 different propery object and add it to the list called properties
      */
     public static void populate(Redfin properties) {
+        // For extra feature #2
+        Random rand = new Random();
+
+        Address a1 = new Address("1234 Roblox Road", "123456");
+        Address a2 = new Address("5678 Fortnite Avenue", "789012");
+        Address a3 = new Address("9012 Minecraft Street", "345678");
+        Address a4 = new Address("3456 Stardew Way", "901234");
+        Address a5 = new Address("7890 Persona Road", "567890");
+        Address a6 = new Address("0001 Terraria Avenue", "111111");
+        Address a7 = new Address("0002 Peak Street", "222222");
+
+        Property p1 = new Property(1, 2, 10000.99, a1, 1000.0, false, 100, 2000);
+        Property p2 = new Property(2, 3, 20000.99, a2, 2000.0, true, 200, 2001);
+        Property p3 = new Property(3, 4, 30000.99, a3, 3000.0, false, 300, 2002);
+        Property p4 = new Property(4, 5, 40000.99, a4, 4000.0, true, 400, 2003);
+        Property p5 = new Property(5, 6, 50000.99, a5, 5000.0, false, 500, 2004);
+        Property p6 = new Property(6, 7, 60000.99, a6, 6000.0, true, 600, 2005);
+        Property p7 = new Property(7, 8, 70000.99, a7, 7000.0, false, 700, 2006);
+
+        properties.add(p1);
+        properties.add(p2);
+        properties.add(p3);
+        properties.add(p4);
+        properties.add(p5);
+        properties.add(p6);
+        properties.add(rand);
     }
 
     /* This method displays the 12 options to the user */
-
+    public static void menu() {
+    }
 }
