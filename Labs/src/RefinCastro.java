@@ -25,10 +25,10 @@ public class RefinCastro {
 class Address implements Comparable<String> {
     // instance variables
     String name;
-    int zipcode;
+    String zipcode;
 
     // constructor
-    public Address(String name, int zipcode) {
+    public Address(String name, String zipcode) {
         this.name = name;
         this.zipcode = zipcode;
     }
@@ -38,7 +38,7 @@ class Address implements Comparable<String> {
         return name;
     }
 
-    public int getZipcode() {
+    public String getZipcode() {
         return zipcode;
     }
 
@@ -47,7 +47,7 @@ class Address implements Comparable<String> {
         this.name = name;
     }
 
-    public void setZipcode(int zipcode) {
+    public void setZipcode(String zipcode) {
         this.zipcode = zipcode;
     }
 
@@ -66,7 +66,7 @@ class Address implements Comparable<String> {
 
         // type cast into proper class type
         Address a = (Address) o;
-        if ((this.name.equals(a.name)) && ((this.zipcode) == a.getZipcode())) {
+        if ((this.name.equals(a.getName())) && ((this.zipcode).equals(a.getZipcode()))) {
             sameAddress = true;
         }
 
@@ -385,7 +385,7 @@ class Redfin implements List {
 
         else {
         // search through each node
-            while ( (head != null) && (index < size - 1) ) {
+            while ( (head != null) && (index < size) ) {
                 ListNode prev = head;
                 ListNode curr = head.getNext();
                 // if the next node is the matching address, then change the references
@@ -433,10 +433,27 @@ class Redfin implements List {
      */
 
     public ArrayList<Property> search(int rooms) {
+        ArrayList<Property> roomsArrayList = new ArrayList<>();
+        int index = 0;
+        ListNode curr = head;
 
-        // your code
-        return null; // must change
-
+        // check if head node is null
+        if(head == null) {
+        }
+        
+        // head node is not null, begin searching 
+        else {
+            // iterate through all nodes
+            while( (curr != null) && (index < size) ) {
+                // check each node's property object for a matching number of rooms, then add to arraylist
+                if(curr.getHouse().getRooms() == rooms) {
+                    roomsArrayList.add(curr.getHouse());
+                }
+                curr = curr.getNext();
+                index++;
+            }
+        }
+        return roomsArrayList; 
     }
 
     /*
@@ -446,14 +463,52 @@ class Redfin implements List {
      */
 
     public ArrayList<Property> search(int rooms, int baths) {
+        ArrayList<Property> rbArrayList = new ArrayList<>();
+        int index = 0;
+        ListNode curr = head;
 
-        // your code
-        return null; // must change
+        // check if head node is null
+        if(head == null) {
+        }
+
+        // head node is not null, begin searching 
+        else {
+            // iterate through all nodes
+            while((curr != null) && (index < size)) {
+                // check each node if the room and baths match the parameters, then add to ArrayList
+                if ( (curr.getHouse().getRooms() == rooms) && (curr.getHouse().getBaths() == baths) ) {
+                    rbArrayList.add(curr.getHouse());
+                }
+                index++;
+                curr = curr.getNext();
+            }
+        }
+        return rbArrayList; 
     }
 
     /* Searches the list to find all the houses at the given zipcode */
     public ArrayList<Property> search(String zipcode) {
-        return null;
+        ArrayList<Property> zpArrayList = new ArrayList<>();
+        int index = 0;
+        ListNode curr = head;
+
+        // check if head node is null
+        if(head == null) {
+        }
+        
+        // head node is not null, begin searching 
+        else {
+            // iterate through all nodes
+            while( (curr != null) && (index < size) ) {
+                // check each node's property object for a matching zipcode, then add to arraylist
+                if(curr.getHouse().getAddress().getZipcode().equals(zipcode)) {
+                    zpArrayList.add(curr.getHouse());
+                }
+                curr = curr.getNext();
+                index++;
+            }
+        }
+        return zpArrayList; 
     }
 
     /* returns the list of all the houses with the price range p1 and p2 */
@@ -492,31 +547,44 @@ class YourDriver {
 
         // ===================================================
         // JUST TESTING IMPLEMENTED METHODS AS I GO
-        Address a1 = new Address("2543 Roblox Way", 123465);
-        Address a2 = new Address("1234 Minecraft Way", 123465);
-        Address a3 = new Address("1224 Fortnite Way", 123465);
-        Address a4 = new Address("1224 Persona Way", 123465);
+        Address a1 = new Address("2543 Roblox Way", "123465");
+        Address a2 = new Address("1234 Minecraft Way", "123465");
+        Address a3 = new Address("1224 Fortnite Way", "123465");
+        Address a4 = new Address("1224 Persona Way", "123465");
 
         Property p1 = new Property(4, 3, 10555.0, a1, 300777.99, false, 777, 2009);
         //Property p2 = new Property(7, 2, 1075.0, a2, 1000.99, false, 25, 2010);
 
         Redfin redfin = new Redfin(p1);
 
+        // -----------------------------------------------------
         // Testing Redfin methods
 
         // testing add(), 2 versions 
         //redfin.add(7, 2, 599.99, 300.0, a4, true, 47, 2020);  // works for adding a new node to the front :)
-        redfin.add(7, 2, 1075.0, a2, 1000.99, false, 25, 2010, 1);  // works @ a given index:)
+        redfin.add(4, 2, 1075.0, a2, 1000.99, false, 25, 2010, 1);  // works @ a given index:)
         System.out.println(redfin.toString()); 
-        
+
         // testing size
         System.out.println("size of list: " + redfin.size());
 
         // testing remove
-        redfin.remove(a2);  // works :)
+        //redfin.remove(a2);  // works :)
         System.out.println(redfin.remove(a3) + "\n" + redfin.toString()); // trying to remove an address  not in the list works :) returns false 
 
-        //System.out.println(p1.toString());    // testing toString
+        // testing size, again
+        System.out.println("size of list: " + redfin.size());
+
+        // testing search for matching rooms
+        System.out.printf("%nList of property objects with matching rooms: %s", redfin.search(4).toString());   // works :)
+        System.out.println();
+
+        // testing search for rooms and baths
+        System.out.printf("%nList of property objects with matching rooms and baths: %s", redfin.search(4, 3).toString()); // works :) 
+
+        // testing search for zipcodes
+        System.out.printf("%nList of property objects with matching zipcodes: %s", redfin.search("123465").toString());
+
 
 
         // ===================================================
