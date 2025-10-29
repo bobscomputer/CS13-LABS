@@ -1,6 +1,6 @@
 import java.util.*;
 
-class BinarySearchPractice {
+class SelectionSortPractice {
     public static void main(String[] args) {
         // lists to be tested
         int[] list1 = {2, 4, 7, 10, 13, 18, 20};
