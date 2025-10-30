@@ -2,14 +2,18 @@ import java.util.*;
 
 class SelectionSortPractice {
     public static void main(String[] args) {
-        // lists to be tested
-        int[] list1 = {2, 4, 7, 10, 13, 18, 20};
-        String[] list2 = {"Apple", "Orange", "Banana", "Grape", "Strawberry"};
-        int[] list3 = {2, 7, 8, 91, 42, 67};
-        String[] list4 = {"Orange", "Apple", "Banana", "Strawberry", "Grape"};
-        int[] list5 = {7, 5, 21, 1, -73, 67, -5};
+        // lists to be tested ----------------------
+        // SORTED lists for binary search tests
+        int[] list1 = { 2, 4, 7, 10, 13, 18, 20 };
+        String[] list2 = { "Apple", "Orange", "Banana", "Grape", "Strawberry" };
 
+        // unsorted lists
+        int[] list3 = { 2, 7, 8, 91, 42, 67 };
+        String[] list4 = { "Orange", "Apple", "Banana", "Strawberry", "Grape" };
+        int[] list5 = { 7, 5, 21, 1, -73, 67, -5 };
+        int[] list6 = { 7, 5, 21, 1, -73, 67, -5 };
 
+        // ------------------------------------------
 
         // testing binary search for integers
         System.out.printf("%nList: %s", Arrays.toString(list1));
@@ -20,24 +24,37 @@ class SelectionSortPractice {
         Arrays.sort(list2);
         System.out.println();
         System.out.printf("%nList: %s", Arrays.toString(list2));
-        System.out.printf("%n(target = 'Strawberry') Target found in list at index %d.", stringBinarySearch(list2, "Strawberry"));
-        System.out.printf("%n(target = 'Mandarin') Target found in list at index %d.", stringBinarySearch(list2, "Mandarin"));
+        System.out.printf("%n(target = 'Strawberry') Target found in list at index %d.",
+                stringBinarySearch(list2, "Strawberry"));
+        System.out.printf("%n(target = 'Mandarin') Target found in list at index %d.",
+                stringBinarySearch(list2, "Mandarin"));
 
-        // bubble sort testing
+        // testing bubble sort 
+
+        // my version
+        /*
         System.out.println("\n");
-        System.out.println("List before calling bubble sort method: " + Arrays.toString(list3));
+        System.out.println("(My version) List before calling bubble sort method: " + Arrays.toString(list3));
         bubbleSort(list3);
-        System.out.println("List after calling bubble sort method: " + Arrays.toString(list3));
+        System.out.println("(My version) List after calling bubble sort method: " + Arrays.toString(list3));
 
         System.out.println();
         System.out.println("List before calling bubble sort method: " + Arrays.toString(list4));
         bubbleSort(list4);
         System.out.println("List after calling bubble sort method: " + Arrays.toString(list4));
+        */
 
+        // testing selection sort
         System.out.println();
         System.out.println("List before calling selection sort method: " + Arrays.toString(list5));
         selectionSort(list5);
         System.out.println("List after calling selection sort method: " + Arrays.toString(list5));
+
+        // testing insertion sort
+        System.out.println();
+        System.out.println("List before calling insertion sort method: " + Arrays.toString(list6));
+        insertionSort(list6);
+        System.out.println("List after calling insertion sort method: " + Arrays.toString(list6));
     }
 
     // binary search for integers
@@ -47,18 +64,18 @@ class SelectionSortPractice {
         int targetIndex = -1;
         boolean targetFound = false;
 
-        // avoids infinite looping if target element is not in list. 
-        while((first <= last) && (targetFound == false)) {
-            int mid = (first + last)/2;
+        // avoids infinite looping if target element is not in list.
+        while ((first <= last) && (targetFound == false)) {
+            int mid = (first + last) / 2;
 
             // target is found
-            if(target == list[mid]) {
+            if (target == list[mid]) {
                 targetIndex = mid;
                 targetFound = true;
             }
 
             // mid-point is greater than target
-            else if(target < list[mid]) {
+            else if (target < list[mid]) {
                 last = mid - 1;
             }
 
@@ -77,16 +94,16 @@ class SelectionSortPractice {
         int targetIndex = -1;
         boolean targetFound = false;
 
-        while( (first <= last) && (targetFound == false) ) {
-            int mid = (first + last)/2;
+        while ((first <= last) && (targetFound == false)) {
+            int mid = (first + last) / 2;
 
-            if(list[mid].equalsIgnoreCase(target)) {
+            if (list[mid].equalsIgnoreCase(target)) {
                 targetIndex = mid;
                 targetFound = true;
             }
 
             // mid-point is less than target string
-            else if(list[mid].compareTo(target) < 0) {
+            else if (list[mid].compareTo(target) < 0) {
                 first = mid + 1;
             }
 
@@ -104,33 +121,33 @@ class SelectionSortPractice {
         int pos2;
         int swaps = 1;
 
-        while(!(swaps == 0)) {
+        while (!(swaps == 0)) {
             swaps = 0;
-            for(int i=0; i<list.length-1; i++) {
+            for (int i = 0; i < list.length - 1; i++) {
                 pos1 = list[i];
-                pos2 = list[i+1];
+                pos2 = list[i + 1];
 
                 // pos1 is greater than pos2, swap is necessary.
-                if(list[i] > list[i+1]) {
+                if (list[i] > list[i + 1]) {
                     int temp = list[i];
-                    list[i] = list[i+1];
-                    list[i+1] = temp;
-                    
+                    list[i] = list[i + 1];
+                    list[i + 1] = temp;
+
                     swaps++;
                 }
                 // else, pos1 is < pos2 or pos1 == pos2
-            }  
+            }
         }
     }
 
     // actual bubble sort algo from professor
     public static void bubbleSort(int[] list) {
-        for(int i=0; i<list.length-1; i++) {
-            for (int j=0; j<list.length-1-i; j++) {
-                if(list[i] > list[i+1]) {
+        for (int i = 0; i < list.length - 1; i++) {
+            for (int j = 0; j < list.length - 1 - i; j++) {
+                if (list[i] > list[i + 1]) {
                     int temp = list[i];
-                    list[i] = list[i+1];
-                    list[i+1] = temp;
+                    list[i] = list[i + 1];
+                    list[i + 1] = temp;
                 }
             }
         }
@@ -138,12 +155,12 @@ class SelectionSortPractice {
 
     // string bubble sort
     public static void bubbleSort(String[] list) {
-        for(int i=0; i<list.length-1; i++) {
-            for (int j=0; j<list.length-1-i; j++) {
-                if(list[i].compareTo(list[i+1]) > 0) {
+        for (int i = 0; i < list.length - 1; i++) {
+            for (int j = 0; j < list.length - 1 - i; j++) {
+                if (list[i].compareTo(list[i + 1]) > 0) {
                     String temp = list[i];
-                    list[i] = list[i+1];
-                    list[i+1] = temp;
+                    list[i] = list[i + 1];
+                    list[i + 1] = temp;
                 }
             }
         }
@@ -151,28 +168,62 @@ class SelectionSortPractice {
 
     // selection sort
     public static void selectionSort(int[] list) {
-        
+
         // keeps track of the next element to be swapped
-        for(int i=0; i<list.length-1; i++) {
+        for (int i = 0; i < list.length - 1; i++) {
             int min = list[i];
             int index = -1;
             boolean swap = false;
 
-            // each iteration to find min. value, ignores the already properly sorted elements
-            for(int j=i+1; j<list.length; j++) {
-                if(min > list[j]) {
+            // each iteration to find min. value, ignores the already properly sorted
+            // elements
+            for (int j = i + 1; j < list.length; j++) {
+                if (min > list[j]) {
                     index = j;
                     min = list[j];
                     swap = true;
                 }
             }
-            
+
             // swap AFTER finding the minimum value after from an iteration
-            if(swap) {
+            if (swap) {
                 int temp = list[i];
                 list[i] = list[index];
                 list[index] = temp;
             }
+        }
+    }
+
+    // insertion sort, without looking at algo, 10 mins
+    public static void insertionSort2(int[] list) {
+
+        for (int i = 1; i < list.length; i++) {
+            if (list[i - 1] > list[i]) {
+                int temp;
+
+                temp = list[i];
+                list[i] = list[i - 1];
+                list[i - 1] = temp;
+            }
+        }
+    }
+
+    // insertion sort from profession, but slightly modified
+    public static void insertionSort(int[] list) {
+
+        // 'i' keeps track of the element we checked.
+        for (int i = 0; i < list.length - 1; i++) {
+            // value and index position of the next element
+            int j = i + 1;
+            int min = list[j];
+
+            // compares values from current element to the first element
+            while ( (j>0) && (min < list[i]) ) { 
+                list[j] = list[j-1]; 
+                j--;
+            }
+            // j=0, first element should be the lowest value
+            list[j] = min;
         }
     }
 }
