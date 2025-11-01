@@ -390,6 +390,15 @@ class Kaiser {
      * 
      */
 
+    public void addSpecilaist(String speciality, String rating, Person person) {
+        // create a new specialist object, add to the end of the list
+        Specialist newSpecialist = new Specialist(speciality, rating, person);
+        specialists.add(newSpecialist);
+
+        // sort list after adding new specialist obj
+        bubbleSortSpecialist(specialists);
+    }
+
     // *****************************************************************************************************************
     /*
      * addNurse method adds a nurse to the end of list of the nurses
@@ -398,6 +407,15 @@ class Kaiser {
      * adds the nurse to the end of the list
      * 
      */
+
+    public void addNurse(String department, String qualifications, String shift, Person supervisor) {
+        // create a new nurse object, add to the end of the list
+        Nurse newNurse = new Nurse(department, qualifications, shift, supervisor);
+        nurses.add(newNurse);
+
+        // sort list after adding new nurse obj
+        insertionSortNurses(nurses);
+    }
 
     // ************************************************************************************************************
 
@@ -412,12 +430,56 @@ class Kaiser {
      * Must implement binary search binary search
      * 
      */
+
+    public void deleteSpecialist(String first, String last) {
+        //
+        int firstIndex = 0;
+        int lastIndex = specialists.size()-1;
+        int targetIndex = -1;
+        boolean targetFound = false;
+        Specialist removeSpecialist;
+
+        // sort list before searching
+        bubbleSortSpecialist(specialists);
+
+        while( (firstIndex <= lastIndex) && (targetFound == false) ) {
+            int mid = (firstIndex + lastIndex)/2;
+
+            // mid-point is the target
+            if( (specialists.get(mid).getFirst().equals(first)) && 
+                (specialists.get(mid).getLast().equals(last)) ) {
+                targetIndex = mid;
+                targetFound = true;
+            }
+
+            // mid-point is less than the target
+            else if( (specialists.get(mid).getFirst().compareTo(first) > 0) || (specialists.get(mid).getLast().compareTo(last) > 0) ) {
+                firstIndex = mid+1;
+            }
+
+            // mid-point is greater than the target
+                lastIndex = mid-1;
+        }
+
+        // remove the specialist with the given first and last name
+        specialists.remove(targetIndex);
+    }
+
     // *******************************************************************************************************************
     /*
      * toStringSpecilaits method: This method creates a string representing the list
      * of all the specialist and returns it
      * 
      */
+    public String toStringSpecialists(ArrayList<Specialist> list) {
+        String specialistDisplay = "";
+
+        for(int i=0; i<list.size(); i++) {
+            specialistDisplay += list.get(i).toString();
+        }
+
+        return specialistDisplay;
+    }
 
     // ************************************************************************************************************
 
@@ -426,6 +488,16 @@ class Kaiser {
      * all the nurses and returns it
      * 
      */
+
+    public String toStringNurses(ArrayList<Nurse> list) {
+        String nursesDisplay = "";
+
+        for(int i=0; i<list.size(); i++) {
+            nursesDisplay += list.get(i).toString();
+        }
+
+        return nursesDisplay;
+    }
 
     // ***********************************************************************************************************
     /*
