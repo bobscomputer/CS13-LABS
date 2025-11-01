@@ -324,6 +324,11 @@ class Specialist extends Person implements Comparable {
      * Two objects are the same if they have the same first and last name
      */
 
+    public boolean equals(Object o) {
+        Specialist s = (Specialist) o;
+        return ( this.person.equals(s) );
+    }
+
 }
 /*
  * The following class has a list of doctors and a list of nurses
@@ -334,14 +339,25 @@ class Kaiser {
     ArrayList<Specialist> specialists; // list of specialist
     ArrayList<Nurse> nurses; // list of nurses
 
-    /* Constructor: instantiates the arraylist */
+    /* Constructors: instantiates the arraylist */
+    public Kaiser() {
+        specialists = new ArrayList<Specialist>();
+        nurses = new ArrayList<Nurse>();
+    }
 
+    public Kaiser(ArrayList<Specialist> specialists, ArrayList<Nurse> nurses) {
+        this.specialists = specialists;
+        this.nurses = nurses;
+    }
+
+    // Accessor/getter methods
     public ArrayList<Specialist> getSpecialList() {
         return specialists;
     }
 
-    /* add a getter method for the list of the nurses */
-
+    public ArrayList<Nurse> getNurses() {
+        return nurses;
+    } 
     // *********************************************************************************************************
 
     /*
@@ -350,8 +366,17 @@ class Kaiser {
      * therfore the compareTo method from the Person class must be called.
      */
 
-    public void bubbleSortSpecialist() {
-        // your code
+    public void bubbleSortSpecialist(ArrayList<Specialist> list) {
+        for(int i=0; i<list.size()-1; i++) {
+            for(int j=0; j<list.size()-1-i; j++) {
+                // if the next name in the list is alphabetically before the previous name, then swap
+                if(list.get(i).compareTo(list.get(i+1)) < 0) {
+                    Specialist temp = list.get(i);
+                    list.set(i, list.get(i+1));
+                    list.set(i+1, temp);
+                }
+            }
+        }
     }
     // *********************************************************************************************************
 
@@ -411,9 +436,29 @@ class Kaiser {
      * on the rating
      * refer to the lecture notes on selection sort
      */
-    public void selectionSortSpecilaist() {
-        // your code
+    public void selectionSortSpecilaist(ArrayList<Specialist> list) {
+        // keeps track of the current element to check with the rest
+        for(int i=0; i<list.size()-1; i++) {
+            Specialist min = list.get(i);
+            int index = -1;
+            boolean swap = false;
 
+            // compares the current element with the rest of the list
+            for(int j=i+1; j<list.size(); j++) {
+                // if the rating of the current element is greater than the next element, then swap
+                if(min.compareRating(list.get(j)) > 0) {
+                    index = j;
+                    min = list.get(j);
+                    swap = true;
+                }
+            }
+            // swap AFTER finding the minimum value from one iteration
+            if(swap) {
+                Specialist temp = list.get(i);
+                list.set(i, min);
+                list.set(index, temp);
+            }
+        }
     }
 
     // ***********************************************************************************************
@@ -423,8 +468,20 @@ class Kaiser {
      * This method sorts the lists of the nurses based on the departmnet.
      * CompareTo method created in the Nurse class must be used
      */
-    public void insertionSortNurses() {
+    public void insertionSortNurses(ArrayList<Nurse> list) {
+        for(int i=0; i<list.size()-1; i++) {
+            // value and index position of the next element
+            int j = i+1;
+            Nurse min = list.get(j);
 
+
+            while( (j>0) && (min.compareTo(list.get(i)) < 0) ) {
+                list.set(j, list.get(j-1));
+                j--;
+            }
+            // starting from j=0, first element should be the lowest value
+            list.set(j, min);
+        }
     }
     // **********************************************************************************************************
 }
@@ -433,6 +490,7 @@ class Kaiser {
  * No sample output is provided for this assignmnet
  * Must verfiy the correctness of your output
  */
+
 class Driver5 {  // temporarily changing method name to Driver5 from YourDriver so I can run in vscode
     public static void main(String[] args) {
         // TEMPORARY TEST CODE
