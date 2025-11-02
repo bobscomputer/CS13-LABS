@@ -168,12 +168,12 @@ class Nurse extends Person implements Comparable {
         // compare departments
         // arg object's department is alphabetically after this object
         if(this.getDepartment().compareTo(n.getDepartment()) > 0) {
-            compareRating = -1;
+            compareRating = 1;
         }
 
         // arg object's department is alphabetically before this object
         else if(this.getDepartment().compareTo(n.getDepartment()) < 0) {
-            compareRating = 1;
+            compareRating = -1;
         }
 
         // arg object's department matches this object's department
@@ -316,7 +316,7 @@ class Specialist extends Person implements Comparable {
             ratingDisplay = "Invalid rating. Rating range is from [1-5] stars.";
         }
         
-        return "\n" + border + String.format("%nSpeciality: %s %nRating: %s", speciality, ratingDisplay) + "\n" + border;
+        return "\n" + border + String.format("%nFull name: %s %s %nSpeciality: %s %nRating: %s", person.getFirst(), person.getLast(), speciality, ratingDisplay) + "\n" + border;
     }
 
     /*
@@ -367,10 +367,14 @@ class Kaiser {
      */
 
     public void bubbleSortSpecialist(ArrayList<Specialist> list) {
+        int compareVal;
+
         for(int i=0; i<list.size()-1; i++) {
             for(int j=0; j<list.size()-1-i; j++) {
+                compareVal = list.get(i).getPerson().compareTo(list.get(i+1).getPerson());
+
                 // if the next name in the list is alphabetically before the previous name, then swap
-                if(list.get(i).compareTo(list.get(i+1)) < 0) {
+                if(compareVal > 0) {
                     Specialist temp = list.get(i);
                     list.set(i, list.get(i+1));
                     list.set(i+1, temp);
@@ -390,9 +394,12 @@ class Kaiser {
      * 
      */
 
-    public void addSpecilaist(String speciality, String rating, Person person) {
+    public void addSpecilaist(String speciality, String rating, String first, String last) {
+        // create a newPerson for new specialist obj
+        Person newPerson = new Person(first, last);
+
         // create a new specialist object, add to the end of the list
-        Specialist newSpecialist = new Specialist(speciality, rating, person);
+        Specialist newSpecialist = new Specialist(speciality, rating, newPerson);
         specialists.add(newSpecialist);
 
         // sort list after adding new specialist obj
@@ -408,13 +415,13 @@ class Kaiser {
      * 
      */
 
-    public void addNurse(String department, String qualifications, String shift, Person supervisor) {
+    public void addNurse(String department, String qualifications, String shift, String first, String last) {
+        // create a newPerson for new nurse obj
+        Person supervisor = new Person(first, last);
+
         // create a new nurse object, add to the end of the list
         Nurse newNurse = new Nurse(department, qualifications, shift, supervisor);
         nurses.add(newNurse);
-
-        // sort list after adding new nurse obj
-        insertionSortNurses(nurses);
     }
 
     // ************************************************************************************************************
@@ -437,7 +444,6 @@ class Kaiser {
         int lastIndex = specialists.size()-1;
         int targetIndex = -1;
         boolean targetFound = false;
-        Specialist removeSpecialist;
 
         // sort list before searching
         bubbleSortSpecialist(specialists);
@@ -446,25 +452,24 @@ class Kaiser {
             int mid = (firstIndex + lastIndex)/2;
 
             // mid-point is the target
-            if( (specialists.get(mid).getFirst().equals(first)) && 
-                (specialists.get(mid).getLast().equals(last)) ) {
+            if( (specialists.get(mid).getPerson().getFirst().equalsIgnoreCase(first)) && 
+                (specialists.get(mid).getPerson().getLast().equalsIgnoreCase(last)) ) {
                 targetIndex = mid;
                 targetFound = true;
+                
+                // remove the specialist with the given first and last name
+                specialists.remove(targetIndex);
             }
 
             // mid-point is less than the target
-            else if( (specialists.get(mid).getFirst().compareTo(first) > 0) || (specialists.get(mid).getLast().compareTo(last) > 0) ) {
+            else if( (specialists.get(mid).getPerson().getFirst().compareTo(first) > 0) || (specialists.get(mid).getPerson().getLast().compareTo(last) > 0) ) {
                 firstIndex = mid+1;
             }
 
             // mid-point is greater than the target
                 lastIndex = mid-1;
         }
-
-        // remove the specialist with the given first and last name
-        specialists.remove(targetIndex);
     }
-
     // *******************************************************************************************************************
     /*
      * toStringSpecilaits method: This method creates a string representing the list
@@ -475,7 +480,7 @@ class Kaiser {
         String specialistDisplay = "";
 
         for(int i=0; i<list.size(); i++) {
-            specialistDisplay += list.get(i).toString();
+            specialistDisplay += list.get(i).toString() + "\n";
         }
 
         return specialistDisplay;
@@ -493,7 +498,7 @@ class Kaiser {
         String nursesDisplay = "";
 
         for(int i=0; i<list.size(); i++) {
-            nursesDisplay += list.get(i).toString();
+            nursesDisplay += list.get(i).toString() + "\n";
         }
 
         return nursesDisplay;
@@ -565,6 +570,7 @@ class Kaiser {
 
 class Driver5 {  // temporarily changing method name to Driver5 from YourDriver so I can run in vscode
     public static void main(String[] args) {
+        /*
         // TEMPORARY TEST CODE
         Person p1 = new Person("James", "Doe");
         Person p2 = new Person("Herbert", "Doe");
@@ -601,29 +607,47 @@ class Driver5 {  // temporarily changing method name to Driver5 from YourDriver 
         System.out.println("Testing compareTo(): comparing Specialist object to itself, should return 0: " + s1.compareTo(s1));
         System.out.println("Testing compareTo(): comparing two different objects with the same speciality, should return 0: " + s1.compareTo(s2));
         System.out.println("Testing compareTo(): comparing two different objects, should call Person class compareTo, should return (-) or (+): " + s1.compareTo(s3));
+        */
 
         // --------------------------------------
 
         // create an object of Kaiser
+        ArrayList<Specialist> specialists = new ArrayList<>();
+        ArrayList<Nurse> nurses = new ArrayList<>();
 
-        // add 5 specialist to the Kaiser object you creted. must use addSpecilaist
-        // method
+        Kaiser kaiser = new Kaiser(specialists, nurses);
 
-        // create 5 objects of Nurse, add it to the list of the nurses by calling the
-        // addNurse method
+        // add 5 specialist to the Kaiser object you creted. must use addSpecilaist method
+        kaiser.addSpecilaist("Family Medicine", "***", "Quen", "Blackwell");
+        kaiser.addSpecilaist("Surgery", "****", "John" , "Doe");
+        kaiser.addSpecilaist("Neurology", "**", "Trisha", "Paytas");
+        kaiser.addSpecilaist("Plastic Surgery", "*****", "Edna", "Mode");
+        kaiser.addSpecilaist("Critical Care", "***", "Jean", "Gunnhildr");
 
-        // call the different sorting methods you wrote to sort the list of the
-        // specialist
+        // create 5 objects of Nurse, add it to the list of the nurses by calling the addNurse method
+        kaiser.addNurse("A20", "Psychiatric Mental Health NP", "7am-7pm", "Freddy", "Fazbear");
+        kaiser.addNurse("A28", "Family NP", "5am-5pm", "William", "Afton");
+        kaiser.addNurse("A19", "Public Health", "12am-12pm", "Michael", "Afton");
+        kaiser.addNurse("A32", "Nursing Education", "7am-7pm", "Vanessa", "Shelly");
+        kaiser.addNurse("A12", "Health Informatics", "7am-7pm", "Bob", "Shod");
 
-        // dislay the sorted list of the specialist by calling the toStringSpecialist
-        // method
+        // call the different sorting methods you wrote to sort the list of the specialist
+        kaiser.selectionSortSpecilaist(specialists);
 
-        // delete a specialist from the list by calling the delete method from the
-        // Kaiser class
+        // dislay the sorted list of the specialist by calling the toStringSpecialist method
+        System.out.println("List of specialists sorted in ascending order of RATING: \n" + kaiser.toStringSpecialists(specialists));
+        kaiser.bubbleSortSpecialist(specialists);
+        System.out.println("List of specialists sorted by LAST NAME: \n" + kaiser.toStringSpecialists(specialists));
 
-        // call the sort method to sort the list of the nurses
+        // delete a specialist from the list by calling the delete method from the Kaiser class
+        kaiser.deleteSpecialist("John", "Doe");
+        System.out.println("List of specialists after deleting John Doe: \n" + kaiser.toStringSpecialists(specialists));
 
+        
         // display the list of the nurses by calling the toString method: toStringNurses
+        System.out.println("List of nurses before sorting: \n" + kaiser.toStringNurses(nurses));
 
+        kaiser.insertionSortNurses(nurses);
+        System.out.println("List of nurses after sorting by DEPARTMENT: \n" + kaiser.toStringNurses(nurses));
     }
 }
