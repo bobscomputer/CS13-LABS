@@ -37,12 +37,11 @@ class SelectionSortPractice {
         System.out.println("(My version) List before calling bubble sort method: " + Arrays.toString(list3));
         bubbleSort(list3);
         System.out.println("(My version) List after calling bubble sort method: " + Arrays.toString(list3));
-
+        */
         System.out.println();
         System.out.println("List before calling bubble sort method: " + Arrays.toString(list4));
         bubbleSort(list4);
         System.out.println("List after calling bubble sort method: " + Arrays.toString(list4));
-        */
 
         // testing selection sort
         System.out.println();
@@ -144,10 +143,10 @@ class SelectionSortPractice {
     public static void bubbleSort(int[] list) {
         for (int i = 0; i < list.length - 1; i++) {
             for (int j = 0; j < list.length - 1 - i; j++) {
-                if (list[i] > list[i + 1]) {
-                    int temp = list[i];
-                    list[i] = list[i + 1];
-                    list[i + 1] = temp;
+                if (list[j] > list[j + 1]) {
+                    int temp = list[j];
+                    list[j] = list[j + 1];
+                    list[j + 1] = temp;
                 }
             }
         }
@@ -155,12 +154,12 @@ class SelectionSortPractice {
 
     // string bubble sort
     public static void bubbleSort(String[] list) {
-        for (int i = 0; i < list.length - 1; i++) {
+        for (int i = 0; i < list.length; i++) {
             for (int j = 0; j < list.length - 1 - i; j++) {
-                if (list[i].compareTo(list[i + 1]) > 0) {
-                    String temp = list[i];
-                    list[i] = list[i + 1];
-                    list[i + 1] = temp;
+                if (list[j+1].compareTo(list[j]) < 0) {
+                    String temp = list[j];
+                    list[j] = list[j + 1];
+                    list[j + 1] = temp;
                 }
             }
         }
