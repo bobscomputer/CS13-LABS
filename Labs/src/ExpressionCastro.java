@@ -75,22 +75,21 @@ class Expressions {
         return exp;
     }
 
-    // Gets a string, separates each token and stores into an Arraylist; spaces are
-    // NOT included in the list.
+    // Gets a string, separates each token and stores into an Arraylist; spaces are NOT included in the list.
     private static ArrayList<String> token(String exp) {
         // declare an Arraylist of string
 
         // for i = 0 to the length of exp
 
         {
-            // if exp.charAt(i0 is not space
+            // if exp.charAt(i) is not space
 
             {
                 // add the charAt(i) to the Arraylist you declared
 
             }
         }
-        // return the arraylist that you decalred
+        // return the arraylist that you declared
         return null; // must modify this line
     }
 
@@ -105,8 +104,7 @@ class Expressions {
         // call the method token(exp), store the result in an arraylist of String
         ArrayList<String> tokens = token(exp);
 
-        // declare an array of string with the size of tokens. This array will hold the
-        // postfix. call this array pots
+        // declare an array of string with the size of tokens. This array will hold the postfix. call this array 'pots'
 
         String[] post = new String[tokens.size()];
 
@@ -118,52 +116,41 @@ class Expressions {
             tokens.remove(0);
             // if the token is not a digit
             if (operations.indexOf(token) != -1) {
+
                 // if the precedence of token is 3
-
                 {
-                    // while s is not empty and precedence of the element at the top of the stuck is
-                    // 2(must use peek method
-
+                    // while s is not empty and precedence of the element at the top of the stuck is 2 (must use peek method)
                     {
-                        // pop the top of the stack and store it in the array post at index
-
-                        // incremnet the index
-
-                    }
-
-                }
-                // else if the precedence of the token is 1
-
-                {
-                    // while the stack is not empty, and the precedence of the top of the stack is 1
-                    // or 2(peek method must be used
-
-                    {
-
                         // pop the top of the stack and store it in the array post at index
 
                         // increment the index
 
                     }
-
                 }
-                // push the token to the stack s
+
+                // else if the precedence of the token is 1
+                {
+                    // while the stack is not empty, and the precedence of the top of the stack is 1 or 2 (peek method must be used)
+                    {
+                        // pop the top of the stack and store it in the array post at index
+
+                        // increment the index
+                    }
+                }
+                // push the token to the stack s (idk why this line is here and not in the statement above)
 
             } else {
-
                 // store the token in the array post at the index
 
                 // increment the index
-
             }
         }
-        // while the stack s is not empty
 
+        // while the stack s is not empty
         {
             // pop an element from the stack, store it in the array post at index
 
             // increment the index
-
         }
         // return array post that holds the postfix
         return null;
@@ -200,30 +187,25 @@ class Expressions {
             // increment the index
 
             // if token is a digit
-
             {
-                // psuh the token to the stack s
+                // push the token to the stack s
 
             }
-            // else
 
+            // else
             {
                 // pop an element from the stack s store it in a variable of type string: n1
 
-                // pop another element from the stack and store it in a variable of type String:
-                // n2
+                // pop another element from the stack and store it in a variable of type String: n2
 
                 // convert the string n1 into integer by using int num1 = Integer.parseInt(n1)
 
                 // convert the string n2 into integer by using : int num2 = Integer.parseInt(n2)
 
-                // call the method calucate and pass num1, num2, token to it, store the result
-                // in a variable
+                // call the method calucate and pass num1, num2, token to it, store the result in a variable
 
                 // push the result to the stack
-
             }
-
         }
         // pop the stack, convert it to an integer, return the result
 
