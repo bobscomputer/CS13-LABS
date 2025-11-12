@@ -77,20 +77,14 @@ class Expressions {
 
     // Gets a string, separates each token and stores into an Arraylist; spaces are NOT included in the list.
     private static ArrayList<String> token(String exp) {
-        // declare an Arraylist of string
+        ArrayList<String> tokens = new ArrayList<>();
 
-        // for i = 0 to the length of exp
-
-        {
-            // if exp.charAt(i) is not space
-
-            {
-                // add the charAt(i) to the Arraylist you declared
-
+        for(int i=0; i<exp.length(); i++) {
+            if(exp.charAt(i) != ' ') {
+                tokens.add(Character.toString(exp.charAt(i)));
             }
         }
-        // return the arraylist that you declared
-        return null; // must modify this line
+        return tokens; 
     }
 
     // Creates a postfix expression String array
@@ -98,73 +92,89 @@ class Expressions {
     public String[] getPostfix() {
         // declare a stack and instantiate it, call the stack s
         Stack s = new Stack();
+        String operations = "*+-/%"; // added %
 
-        String operations = "*+-/";
-
-        // call the method token(exp), store the result in an arraylist of String
+        // call the method token(exp) to get the infix exp, store the result in an arraylist of String
         ArrayList<String> tokens = token(exp);
 
-        // declare an array of string with the size of tokens. This array will hold the postfix. call this array 'pots'
-
+        // declare an array of string with the size of tokens. This array will hold the postfix. call this array 'post'
         String[] post = new String[tokens.size()];
 
-        int index = 0; // this will be used as the index for the array that will hold the postfix
+        int index = 0; // this will be used as the index for the array that will hold the postfix, size of arraylist tokens
 
-        while (tokens.size() > 0) {
+        // while there are still symbols to scan
+        while(tokens.size() > 0) {
 
-            String token = tokens.get(0);
-            tokens.remove(0);
-            // if the token is not a digit
-            if (operations.indexOf(token) != -1) {
+            // get the curr element of our infix exp to scan
+            String currToken = tokens.get(index);
+            tokens.remove(index);
 
-                // if the precedence of token is 3
-                {
-                    // while s is not empty and precedence of the element at the top of the stuck is 2 (must use peek method)
-                    {
+            // if the token is not a digit, token is an operator
+            // condition was given from prof's file
+            if(operations.indexOf(currToken) != -1) {
+
+                // if the token is (+) or (-), precedence = 1
+                if(precedence(currToken) == 1) {
+                    // while s is not empty and precedence of the top of the stack is greater or equal to the current token
+                    while( (!s.isEmpty()) && (precedence((String)(s.peek())) >= 1)) {
                         // pop the top of the stack and store it in the array post at index
-
+                        post[index] = (String) s.pop();
                         // increment the index
-
+                        index++;
                     }
                 }
 
-                // else if the precedence of the token is 1
-                {
+                // else if the token is (*), (/), or (%), precedence = 2
+                else if(precedence(currToken) == 2) {
                     // while the stack is not empty, and the precedence of the top of the stack is 1 or 2 (peek method must be used)
+                    while( (!s.isEmpty()) && (precedence((String)(s.peek()) ) == 2) ) 
                     {
                         // pop the top of the stack and store it in the array post at index
-
+                        post[index] = (String) s.pop();
                         // increment the index
+                        index++;
                     }
                 }
-                // push the token to the stack s (idk why this line is here and not in the statement above)
+                
+            } 
 
-            } else {
+            // token is a digit OR has higher precedence than top of stack
+            else {
                 // store the token in the array post at the index
-
+                post[index] = currToken;
                 // increment the index
+                index++;
             }
         }
 
-        // while the stack s is not empty
-        {
+        // store the rest of our stack into the post infix, while the stack s is not empty
+        while(!s.isEmpty()) {
             // pop an element from the stack, store it in the array post at index
-
+            post[index] = (String) s.pop();
             // increment the index
+            index++;
         }
-        // return array post that holds the postfix
-        return null;
+        
+        return post;
     }
 
     // returns the level of precedence of a given operator
     // MUST ADD '%' operator; has same precedence as * and /
     private static int precedence(String opr) {
-        String[] operators = { "+", "-", "*", "/" };
-        // if opr is the same as the array operators at index 2 or 3 return 2
+        String[] operators = { "+", "-", "*", "/" , "%"};
+        int precedence = -1;
+
+        // if opr is the same as the array operators at index 2, 3, or 4 return 2
+        if( (opr.equals(operators[2]) ) || ( (opr.equals(operators[3])) ) || ( (opr.equals(operators[3])) ) ) {
+            precedence = 2;
+        }
 
         // if opr is the same as the array operators at index 0 or 1 return 1
-        return -1;
+        else {
+            precedence = 1;
+        }
 
+        return precedence;
     }
 
     // evalulates/calculates the postfix expression. algorithm is based on the algorithms from the lectures.
