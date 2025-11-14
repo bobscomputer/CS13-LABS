@@ -213,12 +213,12 @@ class Expressions {
             // else, token is an operator
             else {
                 // pop the top 2 values to apply the operator
-                String n2 = (String) s.pop();
-                String n1 = (String) s.pop();
+                String n1 = String.valueOf(s.pop());    
+                String n2 = String.valueOf(s.pop());    
 
                 // convert the string values into ints to be calculated
-                int num2 = Integer.parseInt(n1);
-                int num1 = Integer.parseInt(n2);
+                int num1 = Integer.parseInt(n1);
+                int num2 = Integer.parseInt(n2);
 
                 // call the method calculate and pass num1, num2, token to it, store the result in a variable
                 result = calculate(num1, num2, token);
@@ -228,38 +228,37 @@ class Expressions {
             }
         }
         // final value, pop the stack, convert it to an integer, return the result
-        result = Integer.parseInt((String) s.pop());
+        result = Integer.parseInt(String.valueOf(s.pop())); 
         return result; 
     }
 
     // calculates an expression given two numbers and an operator
-    // The operator "%" must be added. The "%" CAN'T have the denominator as zero
-    // partial code is given (?)
+    // Added the operator "%" must be added
     private int calculate(int num1, int num2, String operator) {
         int solution = -1;
 
-        if(operator == "+") {
+        if(operator.equals("+")) {
             solution = num1 + num2;
         }
 
-        else if(operator == "-") {
-            solution = num1 - num2;
+        else if(operator.equals("-")) {
+            solution = num2 - num1;
         }
 
-        else if(operator == "*") {
+        else if(operator.equals("*")) {
             solution = num1 * num2;
         }
 
-        else if(operator == "/") {
-            solution = num1 / num2;
+        else if(operator.equals("/")) {
+            solution = num2 / num1;
         }
 
-        else if(operator == "%") {
-            if(num2 != 0) {
-                solution = num1 % num2;
+        else if(operator.equals("%")) {
+            // to prevent undefined values (can't divide by 0)
+            if(num1 != 0) {
+                solution = num2 % num1;
             }
         }
-
         return solution; 
     }
 }
