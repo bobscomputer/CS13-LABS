@@ -4,12 +4,13 @@ Date: 11/11/2025
 Description: Demonstarting my understanding of stacks and infix to postfix expressions
 Testimony: All implemented code is written by me
 ========================================================
-TOTAL Self grade score: 95/100 (explanation below)
+TOTAL Self grade score: 90/100 (explanation below)
 
 EXPLANATIONS...
 Proper naming: All methods and fields have descriptive and short names. (5/5)
 Indendation: All code is neatly organized and indented by at least 4 spaces. (5/5)
-Comments: All logic is preceded with a comment explaining its purpose. (25/25)
+Comments: All logic is preceded with a comment explaining its purpose. 
+          However, I deleted or edited many of the given comments inside the methods. (20/25)
 Program compiles: Program compiles in JGRASP (30/30)
 Program runs & the output is similar to provided output: 
         My values match the provided output from the prof's given driver, 
@@ -267,12 +268,12 @@ class ExpDriver {
         String borderFmt = "-".repeat(20);
         ArrayList<String> expList = new ArrayList<>();  // stores my 5 different expressions
 
-        // 5 different expressions, some include % operator
-        expList.add("8 + 1 * 2 - 6 + 1 / 5");
+        // 5 different expressions, all include %
+        expList.add("8 + 1 * 2 % 6 + 1 / 5");
         expList.add("4 % 2 + 3 * 4 / 5 - 6");
-        expList.add("6 * 5 * 4 / 3 / 2 - 1");
+        expList.add("6 % 5 * 4 / 3 / 2 - 1");
         expList.add("9 % 3 + 8 % 3 - 2 + 4");
-        expList.add("1 + 2 * 3 - 4 / 5 + 6");
+        expList.add("1 + 6 % 3 - 4 / 5 + 6");
 
         // displays all 5 different expressions
         for(int i=0; i<expList.size(); i++) {
