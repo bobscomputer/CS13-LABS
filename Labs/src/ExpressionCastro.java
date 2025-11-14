@@ -4,16 +4,18 @@ Date: 11/11/2025
 Description: Demonstarting my understanding of stacks and infix to postfix expressions
 Testimony: All implemented code is written by me
 ========================================================
-TOTAL Self grade score: /100
+TOTAL Self grade score: 95/100 (explanation below)
 
 EXPLANATIONS...
-Proper naming:  (/5)
-Indendation: (/5)
-Comments: (/25)
-Program compiles: (/30)
-Program runs & the output is similar to provided output: (/25)
-Requirements: (/25)
-Self grade: (/5)
+Proper naming: All methods and fields have descriptive and short names. (5/5)
+Indendation: All code is neatly organized and indented by at least 4 spaces. (5/5)
+Comments: All logic is preceded with a comment explaining its purpose. (25/25)
+Program compiles: Program compiles in JGRASP (30/30)
+Program runs & the output is similar to provided output: 
+        My values match the provided output from the prof's given driver, 
+        but my formatting is different from the provided driver. (20/25)
+Requirements: I implemented all necessary methods and driver requirements. (25/25)
+Self grade: I have provided a self grade. (5/5)
 ========================================================
 
 Must follow the exact given algorithm
@@ -90,41 +92,35 @@ class Expressions {
     // Creates a postfix expression String array
     // Algorithm is based on the algorithm from prof's video lecture
     public String[] getPostfix() {
-        // declare a stack and instantiate it, call the stack s
+        // data declarations & instantiations
         Stack s = new Stack();
         String operations = "*+-/%"; // added %
-
-        // call the method token(exp) to get the infix exp, store the result in an arraylist of String
         ArrayList<String> tokens = token(exp);
-
-        // declare an array of string with the size of tokens. This array will hold the postfix. call this array 'post'
         String[] post = new String[tokens.size()];
+        int index = 0; 
 
-        int index = 0; // this will be used as the index for the array that will hold the postfix, size of arraylist tokens
-
-        // while there are still symbols to scan
+        // to scan all tokens in the infix
         while(tokens.size() > 0) {
 
             // get the curr element of our infix exp to scan
-            String currToken = tokens.get(0); // changed from index to 0
-            tokens.remove(0); // changed from index to 0
+            String currToken = tokens.get(0); 
+            tokens.remove(0); 
 
             // if the token is not a digit, token is an operator
-            // condition was given from prof's file
             if(operations.indexOf(currToken) != -1) {
 
                 // if the token is (+) or (-), precedence = 1
                 if(precedence(currToken) == 1) {
 
-                    // while s is not empty and precedence of the top of the stack is greater or equal to the current token
-                    while( (!s.isEmpty()) && (precedence((String)(s.peek())) >= 1)) {
-                        // pop the top of the stack and store it in the array post at index
+                    // check if stack is not empty & if current token has higher or equal precedence than the top of the stack
+                    while( (!s.isEmpty()) && (precedence((String) s.peek()) >= 1) ) {
+                        // pop the top of the stack and store it in the array post at the current index
                         post[index] = (String) s.pop();
                         index++;
                     }
 
                     // stack is empty OR token has higher precedence than top of stack
-                    if( (s.isEmpty()) || (precedence(currToken) > precedence((String)(s.peek()))) ) {
+                    if( (s.isEmpty()) || (precedence(currToken) > precedence((String)s.peek())) ) {
                         s.push(currToken);
                     }
                 }
@@ -132,15 +128,15 @@ class Expressions {
                 // else if the token is (*), (/), or (%), precedence = 2
                 else if(precedence(currToken) == 2) {
 
-                    // while the stack is not empty, and the precedence of the top of the stack is 1 or 2 (peek method must be used)
-                    while( (!s.isEmpty()) && (precedence((String)(s.peek()) ) == 2) ) {
-                        // pop the top of the stack and store it in the array post at index
+                    // check if stack is not empty & if current token has higher or equal precedence than the top of the stack
+                    while( (!s.isEmpty()) && (precedence((String) s.peek()) == 2) ) {
+                        // pop the top of the stack and store it in the array post at the current index
                         post[index] = (String) s.pop();
                         index++;
                     }
 
                     // stack is empty OR token has higher precedence than top of stack
-                    if( (s.isEmpty()) || (precedence(currToken) > precedence((String)(s.peek()))) ) {
+                    if( (s.isEmpty()) || (precedence(currToken) > precedence((String) s.peek())) ) {
                         s.push(currToken);
                     }
                 }
@@ -149,7 +145,7 @@ class Expressions {
 
             // token is a digit
             else {
-                // store the token in the array post at the index
+                // store the token in the array post at the current index
                 post[index] = currToken;
                 index++;
             }
@@ -165,7 +161,7 @@ class Expressions {
     }
 
     // returns the level of precedence of a given operator
-    // MUST ADD '%' operator; has same precedence as * and /
+    // added '%' operator; has same precedence as * and /
     private static int precedence(String opr) {
         String[] operators = { "+", "-", "*", "/" , "%"};
         int precedence = -1;
@@ -179,7 +175,6 @@ class Expressions {
         else {
             precedence = 1;
         }
-
         return precedence;
     }
 
@@ -189,28 +184,25 @@ class Expressions {
         String opr = "*/%+-"; // added %
         String[] post = this.getPostfix(); // creating the postfix expression
 
+        // formatting from prof's code. can't removed
         System.out.print("\t\t\t" + Arrays.toString(post) + "\t=");
 
         Stack s = new Stack(); // this stack is used to push the numbers in the postfix
         int result = 0;
-
         int index = 0;
-        // while index is less than the length of post
+
+        // while there are still tokens to scan
         while(index < post.length)
         {
-            // declare a variable of type String and store post[index] in it
             String token = post[index];
-
-            // increment the index
             index++;
 
-            // if token is a digit
+            // if token is a digit, push to stack
             if(opr.indexOf(token) == -1) {
-                // push the token to the stack s
                 s.push(token);
             }
 
-            // else, token is an operator
+            // else, token is an operator, run a calculation
             else {
                 // pop the top 2 values to apply the operator
                 String n1 = String.valueOf(s.pop());    
@@ -220,14 +212,14 @@ class Expressions {
                 int num1 = Integer.parseInt(n1);
                 int num2 = Integer.parseInt(n2);
 
-                // call the method calculate and pass num1, num2, token to it, store the result in a variable
+                // apply the operator with calculate method
                 result = calculate(num1, num2, token);
 
                 // push the result to the stack
                 s.push(result);
             }
         }
-        // final value, pop the stack, convert it to an integer, return the result
+        // no more tokens to scan, return the final value
         result = Integer.parseInt(String.valueOf(s.pop())); 
         return result; 
     }
@@ -267,27 +259,46 @@ class Expressions {
 // MUST create 5 DIFFERENT expression, each expression must have AT LEAST 5 operators
 // MUST be SIMILAR to the given Driver and include expressions with "%"
 
-/*
+// (note for myself) the weird tabbing for the postfix expression is from the prof's given code. 
+// i can't change it because it will ruin the display for the (commented) driver below that is given from the prof.
 class ExpDriver {
     public static void main(String[] args) {
-        String problem1 = "2 + 3 + 7 * 4 - 2 / 3";
-        Expressions prob1 = new Expressions(problem1);
+        // data declarations & instatiations
+        String borderFmt = "-".repeat(20);
+        ArrayList<String> expList = new ArrayList<>();  // stores my 5 different expressions
 
-        System.out.printf("%nInfix exp: %s", prob1.getExp());
+        // 5 different expressions, some include % operator
+        expList.add("8 + 1 * 2 - 6 + 1 / 5");
+        expList.add("4 % 2 + 3 * 4 / 5 - 6");
+        expList.add("6 * 5 * 4 / 3 / 2 - 1");
+        expList.add("9 % 3 + 8 % 3 - 2 + 4");
+        expList.add("1 + 2 * 3 - 4 / 5 + 6");
 
+        // displays all 5 different expressions
+        for(int i=0; i<expList.size(); i++) {
+            System.out.printf("%n%s PROBLEM #%d %s", borderFmt, i+1, borderFmt);
+            methodsForExpression(expList.get(i));
+            System.out.println("-".repeat(52));
+        }
+    }
+
+    // Helper method that I added which displays all info for each problem
+    public static void methodsForExpression(String problem) {
+        Expressions exp = new Expressions(problem);
+
+        // Runs methods for given infix expression
+        System.out.printf("%nInfix exp: %s", problem);
         System.out.println("\nTurning infix to postfix...");
-        
-        System.out.printf("%nPostfix exp: %s", Arrays.toString(prob1.getPostfix()));
+        System.out.printf("%nResult of expression: %d %n", exp.evalPostfix());
     }
 }
-*/
 
 /*
  * Once all the methods have been implemented. Uncomment the given driver to test your code
  * The following driver must work with your code.
  */
 
-  
+/*
 class Driver {
    public static void main(String[] args) {
        LinkedList<String> list = new LinkedList<String>();
@@ -319,3 +330,4 @@ class Driver {
       }
    }
 }
+*/
