@@ -9,13 +9,14 @@ TOTAL Self grade score: 90/100 (explanation below)
 EXPLANATIONS...
 Proper naming: All methods and fields have descriptive and short names. (5/5)
 Indendation: All code is neatly organized and indented by at least 4 spaces. (5/5)
-Comments: All logic is preceded with a comment explaining its purpose. 
-          However, I deleted or edited many of the given comments inside the methods. (20/25)
+Comments: All logic is preceded with a comment explaining its purpose. (25/25)
 Program compiles: Program compiles in JGRASP (30/30)
 Program runs & the output is similar to provided output: 
         My values match the provided output from the prof's given driver, 
         but my formatting is different from the provided driver. (20/25)
-Requirements: I implemented all necessary methods and driver requirements. (25/25)
+Requirements: I implemented all necessary methods and driver requirements, but
+              I deleted or edited many of the given comments inside the methods and 
+              added additional code outside of the given pseudocode. (20/25)
 Self grade: I have provided a self grade. (5/5)
 ========================================================
 
@@ -141,7 +142,6 @@ class Expressions {
                         s.push(currToken);
                     }
                 }
-                
             } 
 
             // token is a digit
