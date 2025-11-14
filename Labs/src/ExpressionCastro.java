@@ -106,8 +106,8 @@ class Expressions {
         while(tokens.size() > 0) {
 
             // get the curr element of our infix exp to scan
-            String currToken = tokens.get(index);
-            tokens.remove(index);
+            String currToken = tokens.get(0); // changed from index to 0
+            tokens.remove(0); // changed from index to 0
 
             // if the token is not a digit, token is an operator
             // condition was given from prof's file
@@ -115,34 +115,42 @@ class Expressions {
 
                 // if the token is (+) or (-), precedence = 1
                 if(precedence(currToken) == 1) {
+
                     // while s is not empty and precedence of the top of the stack is greater or equal to the current token
                     while( (!s.isEmpty()) && (precedence((String)(s.peek())) >= 1)) {
                         // pop the top of the stack and store it in the array post at index
                         post[index] = (String) s.pop();
-                        // increment the index
                         index++;
+                    }
+
+                    // stack is empty OR token has higher precedence than top of stack
+                    if( (s.isEmpty()) || (precedence(currToken) > precedence((String)(s.peek()))) ) {
+                        s.push(currToken);
                     }
                 }
 
                 // else if the token is (*), (/), or (%), precedence = 2
                 else if(precedence(currToken) == 2) {
+
                     // while the stack is not empty, and the precedence of the top of the stack is 1 or 2 (peek method must be used)
-                    while( (!s.isEmpty()) && (precedence((String)(s.peek()) ) == 2) ) 
-                    {
+                    while( (!s.isEmpty()) && (precedence((String)(s.peek()) ) == 2) ) {
                         // pop the top of the stack and store it in the array post at index
                         post[index] = (String) s.pop();
-                        // increment the index
                         index++;
+                    }
+
+                    // stack is empty OR token has higher precedence than top of stack
+                    if( (s.isEmpty()) || (precedence(currToken) > precedence((String)(s.peek()))) ) {
+                        s.push(currToken);
                     }
                 }
                 
             } 
 
-            // token is a digit OR has higher precedence than top of stack
+            // token is a digit
             else {
                 // store the token in the array post at the index
                 post[index] = currToken;
-                // increment the index
                 index++;
             }
         }
@@ -151,10 +159,8 @@ class Expressions {
         while(!s.isEmpty()) {
             // pop an element from the stack, store it in the array post at index
             post[index] = (String) s.pop();
-            // increment the index
             index++;
         }
-        
         return post;
     }
 
@@ -180,76 +186,109 @@ class Expressions {
     // evalulates/calculates the postfix expression. algorithm is based on the algorithms from the lectures.
     // the generates postfix expression is stored in the array; this method calls the getPostfix method
     public int evalPostfix() {
-        String opr = "*/+-";
+        String opr = "*/%+-"; // added %
         String[] post = this.getPostfix(); // creating the postfix expression
 
         System.out.print("\t\t\t" + Arrays.toString(post) + "\t=");
 
-        Stack s = new Stack(); // this satck is used to push the numbers in the postfix
+        Stack s = new Stack(); // this stack is used to push the numbers in the postfix
         int result = 0;
 
         int index = 0;
         // while index is less than the length of post
-
+        while(index < post.length)
         {
             // declare a variable of type String and store post[index] in it
+            String token = post[index];
 
             // increment the index
+            index++;
 
             // if token is a digit
-            {
+            if(opr.indexOf(token) == -1) {
                 // push the token to the stack s
-
+                s.push(token);
             }
 
-            // else
-            {
-                // pop an element from the stack s store it in a variable of type string: n1
+            // else, token is an operator
+            else {
+                // pop the top 2 values to apply the operator
+                String n2 = (String) s.pop();
+                String n1 = (String) s.pop();
 
-                // pop another element from the stack and store it in a variable of type String: n2
+                // convert the string values into ints to be calculated
+                int num2 = Integer.parseInt(n1);
+                int num1 = Integer.parseInt(n2);
 
-                // convert the string n1 into integer by using int num1 = Integer.parseInt(n1)
-
-                // convert the string n2 into integer by using : int num2 = Integer.parseInt(n2)
-
-                // call the method calucate and pass num1, num2, token to it, store the result in a variable
+                // call the method calculate and pass num1, num2, token to it, store the result in a variable
+                result = calculate(num1, num2, token);
 
                 // push the result to the stack
+                s.push(result);
             }
         }
-        // pop the stack, convert it to an integer, return the result
-
-        return 0; // must change this line
+        // final value, pop the stack, convert it to an integer, return the result
+        result = Integer.parseInt((String) s.pop());
+        return result; 
     }
 
     // calculates an expression given two numbers and an operator
     // The operator "%" must be added. The "%" CAN'T have the denominator as zero
     // partial code is given (?)
     private int calculate(int num1, int num2, String operator) {
-        // if operator is * then return num1 * num2
+        int solution = -1;
 
-        // if ....
+        if(operator == "+") {
+            solution = num1 + num2;
+        }
 
-        return 0; // must change this line
+        else if(operator == "-") {
+            solution = num1 - num2;
+        }
 
+        else if(operator == "*") {
+            solution = num1 * num2;
+        }
+
+        else if(operator == "/") {
+            solution = num1 / num2;
+        }
+
+        else if(operator == "%") {
+            if(num2 != 0) {
+                solution = num1 % num2;
+            }
+        }
+
+        return solution; 
     }
 }
 
 
 // MUST create 5 DIFFERENT expression, each expression must have AT LEAST 5 operators
 // MUST be SIMILAR to the given Driver and include expressions with "%"
+
+/*
 class ExpDriver {
     public static void main(String[] args) {
+        String problem1 = "2 + 3 + 7 * 4 - 2 / 3";
+        Expressions prob1 = new Expressions(problem1);
 
+        System.out.printf("%nInfix exp: %s", prob1.getExp());
+
+        System.out.println("\nTurning infix to postfix...");
+        
+        System.out.printf("%nPostfix exp: %s", Arrays.toString(prob1.getPostfix()));
     }
 }
+*/
 
 /*
  * Once all the methods have been implemented. Uncomment the given driver to test your code
  * The following driver must work with your code.
  */
 
-/*  
+  
 class Driver {
    public static void main(String[] args) {
        LinkedList<String> list = new LinkedList<String>();
@@ -281,4 +320,3 @@ class Driver {
       }
    }
 }
-*/
