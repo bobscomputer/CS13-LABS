@@ -7,11 +7,22 @@ class ExamPracticeDriver {
         // Declarations & Instantiations
         Scanner scan = new Scanner(System.in);
 
-        IntLinkedList list = new IntLinkedList();
-        menu(scan, list);
+        
+        /*
+        IntLinkedList list = new IntLinkedList(); // temporary
+        // testing adding at an index when the list is empty
+        System.out.println(list.toString());
+        
+        list.add(12, 0);
+        System.out.println("\nAfter adding an element to an empty list");
+        System.out.println(list.toString());
+        */
+        
+        menu(scan);
     }
 
-    public static void menu(Scanner scan, IntLinkedList list) {
+    public static void menu(Scanner scan) {
+        IntLinkedList list = new IntLinkedList();
         Scanner scan2 = new Scanner(System.in);
         String input;
         String border = "-".repeat(50) + "\n";
@@ -39,7 +50,7 @@ class ExamPracticeDriver {
                     list.add(val);
 
                     System.out.printf("%nAdded %d to the list", val);
-                    System.out.printf("%nData: %s Size: %d %n%s", list.toString(), list.getSize(), border);
+                    System.out.printf("%nData: %s %n%s", list.toString(), border);
                     break;
 
                 // option for add at a given index
@@ -49,13 +60,13 @@ class ExamPracticeDriver {
                     val = scan2.nextInt();
 
                     System.out.println();
-                    System.out.printf("Enter the index to insert new node [0-%d): ", list.getSize());
+                    System.out.printf("Enter the index to insert new node [0-%d]: ", list.getSize());
                     index = scan2.nextInt();
 
                     System.out.printf("Adding %d at index %d", val, index);
                     list.add(val, index);
 
-                    System.out.printf("%nData: %s Size: %d %n%s", list.toString(), list.getSize(), border);
+                    System.out.printf("%nData: %s %n%s", list.toString(), border);
                     break;
 
                 // option for remove
@@ -67,12 +78,12 @@ class ExamPracticeDriver {
                     System.out.println("Removing: " + val);
                     list.remove(val);
 
-                    System.out.printf("%nData: %s Size: %d %n%s", list.toString(), list.getSize(), border);
+                    System.out.printf("%nData: %s %n%s", list.toString(), border);
                     break;
 
                 // option to display list data and size
                 case "4":
-                    System.out.printf("%nData: %s Size: %d %n%s", list.toString(), list.getSize(), border);
+                    System.out.printf("%nData: %s %n%s", list.toString(), border);
                     break;
 
                 default:
@@ -156,23 +167,38 @@ class IntLinkedList {
         MyListNodeClass prev = curr;
         MyListNodeClass newNode = new MyListNodeClass(data);
         boolean foundIndex = false;
+        boolean empty = false;
 
         // if the list is empty
         if(size == 0) {
-            // ...
+            head = newNode;
+            size++;
+            empty = true;
         }
 
-        // adding to the first index
-        if( (head != null) && (index == 0) ) {
+        // adding to the first index, but list is not empty
+        else if( (index == 0) && (empty == false) ) {
             newNode.setNext(head);
             head = newNode;
+            size++;
+        }
+
+        // adding to the last index
+        else if( (index == size) && (empty == false) ) {
+            // traverse until the end of the list
+            while(curr.getNext() != null) {
+                curr = curr.getNext();
+            }
+
+            // add new node to the end of the list
+            curr.setNext(newNode);
             size++;
         }
 
         // list is not empty
         else {
             // only add the node if the given index is within bounds
-            if( (index < size) && (index >= 0) ) {
+            if( (index < size) && (index > 0) ) { 
 
                 // traverse the list for the node before the given index
                 while( (curr.getNext() != null) && (foundIndex == false) ) {
@@ -271,6 +297,8 @@ class IntLinkedList {
             // avoids adding a comma after the last node 
             displayString += curr.getData() + "]";
         }
+
+        displayString += String.format("%nSize: %d", getSize());
         return displayString;
     }
 }
