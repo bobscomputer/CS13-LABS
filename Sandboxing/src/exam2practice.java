@@ -6,17 +6,6 @@ class ExamPracticeDriver {
     public static void main(String[] args) {
         // Declarations & Instantiations
         Scanner scan = new Scanner(System.in);
-
-        
-        /*
-        IntLinkedList list = new IntLinkedList(); // temporary
-        // testing adding at an index when the list is empty
-        System.out.println(list.toString());
-        
-        list.add(12, 0);
-        System.out.println("\nAfter adding an element to an empty list");
-        System.out.println(list.toString());
-        */
         
         menu(scan);
     }
