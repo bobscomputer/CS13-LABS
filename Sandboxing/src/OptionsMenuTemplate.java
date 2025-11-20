@@ -10,7 +10,7 @@ public class OptionsMenuTemplate {
     }
     */
 
-    // calls methods or runs code when an option is selected
+    // calls methods or runs some code when an option is selected
     public static void menuSelect(Scanner scan) {
         String border = "-".repeat(45); // spacer to keep outputs organized
         boolean quit = false;
@@ -43,7 +43,7 @@ public class OptionsMenuTemplate {
 
     // Displays the options
     public static void menuDisplay() {
-        String border = "-".repeat(45);
+        String border = "-".repeat(45); // in case needed elsewhere
         System.out.printf("%s%n" +
                           "Enter [1-3] to select the following options OR " + 
                           "%nEnter 'Q' or 'q' to exit the program. %n" +
