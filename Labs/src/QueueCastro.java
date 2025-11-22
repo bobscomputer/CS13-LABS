@@ -512,6 +512,20 @@ class Queue {
         }
     }
 
+    // Additional method
+    public Queue favoriteSongs(Queue list, Scanner scan) {
+        boolean quit = false;
+
+        while(!quit) {
+            System.out.println("Enter 'q' or 'Q' to quit.");
+            System.out.print("Enter the song title you want to add to your favorites: ");
+            String input = scan.nextLine();
+            if( (input.equalsIgnoreCase("q")) ) quit = true;
+
+            //....
+        }
+    }
+
 }
 
 /*
