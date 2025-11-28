@@ -97,6 +97,22 @@ class YourDriver17 {
         list7.add("Aloha");
         list7.add("Greetings");
 
+        // For additional method #1, vowelEnd()
+        LinkedList<String> list8 = new LinkedList<>();
+        list8.add("Pie");
+        list8.add("California");
+        list8.add("Washington");
+        list8.add("Oregon");
+        list8.add("Mole");
+
+        // For additional method #2, evenArrayList()
+        ArrayList<Double> list9 = new ArrayList<>();
+        list9.add(2.2);
+        list9.add(10.0);
+        list9.add(14.2);
+        list9.add(16.0);
+        list9.add(20.0);
+
         // Testing methods ----------------------------
         String border = "=-".repeat(15);
 
@@ -153,17 +169,25 @@ class YourDriver17 {
         // Testing additional methods!
         System.out.println();
         System.out.println("=*".repeat(50));
-        System.out.println("Additional method #1...");
+
+        // testing additional method #1, vowelEnd()
+        System.out.println("Additional method #1...vowelEnd()");
+        System.out.println(list8 + " ...List with words ending with a vowel > " + Recursive.vowelEnd(list8));
+
+        // testing additional method #2, evenArrayList()
+        System.out.println();
         System.out.println("Additional method #2...");
+        System.out.println(list9 + " ...List with even numbers > " + Recursive.evenArrayList(list9));
 
         System.out.println("=*".repeat(50));
         // end of code for my driver
     }
-}
+} 
+
 // Do not delete the given driver 
 
-/* TEMPORARILY changed name from Driver to Driver16 so I can run in vscode
-class Driver16 {
+/* //TEMPORARILY changed name from Driver to Driver16 so I can run in vscode
+class Driver {
     public static void main(String[] args) {
 
         /// ********************************************************
@@ -509,9 +533,49 @@ class Recursive {
         return findAvg(list, sum, size);
     }
 
-    // additionl method 1
-    
+    // addditional method 1 ... returns a list of strings from the given list that end with a vowel
+    public static LinkedList vowelEnd(LinkedList list) {
+        LinkedList<String> vowelList = new LinkedList<>();
 
-    // addditional method 2
+        // base case, return if list is empty
+        if(list.isEmpty()) {
+            return vowelList;
+        }
+
+        // remove first element
+        String s = String.valueOf(list.removeFirst());
+        String lastChar = String.valueOf(s.charAt(s.length()-1));
+
+        // recursive case, builds call stack
+        vowelList = vowelEnd(list);
+
+        if("aeiouAEIOU".contains(lastChar)) {
+            vowelList.add(s);
+        }
+
+        return vowelList;
+    }
+
+    // addditional method 2 ... returns a list of all values that are even
+    public static ArrayList<Double> evenArrayList(ArrayList list) {
+        ArrayList<Double> evenList = new ArrayList<>();
+
+        // base case
+        if(list.isEmpty()) {
+            return evenList;
+        }
+
+        // remove first element
+        double num = (double) list.removeFirst();
+
+        // recursive case, builds call stack
+        evenList = evenArrayList(list);
+
+        if(num % 2 == 0) {
+            evenList.add(num);
+        }
+
+        return evenList;
+    }
 
 } // end of class
