@@ -54,6 +54,7 @@ public class RecursiveCastro {
  * 
  */
 
+/*
 class YourDriver17 {
     public static void main(String[] args) {
         LinkedList<Integer> list = new LinkedList<>();
@@ -90,11 +91,10 @@ class YourDriver17 {
 
     }
 }
+// Do not delete the given driver */
 
-/* Do not delete the given driver */
-
-/* 
-class Driver {
+// TEMPORARILY changed name from Driver to Driver16 so I can run in vscode
+class Driver16 {
     public static void main(String[] args) {
 
         /// ********************************************************
@@ -207,7 +207,7 @@ class Driver {
         // calling the additional methods
 
     }
-} // end of driver class */
+} // end of driver class 
 
 /*
  * In this program you must use the following methods from the LinkedList class
@@ -234,11 +234,13 @@ class Recursive {
         }
 
         // add the last element of the list to the reverse list
+        reversed.add(list.getLast());
 
         // remove the last element from the list
+        list.removeLast();
 
         // call the listReverse with the two lists as the paramters
-
+        listReversed(list, reversed);
     }
 
     /*
@@ -261,6 +263,7 @@ class Recursive {
             list.add(1);
             // add 1 to the list
             list.add(1);
+            max-=2; // because we ignore the values we add
         }
 
         // find the sum of the last two numbers in the list, add the result to the list.
@@ -388,20 +391,34 @@ class Recursive {
      */
     public static Boolean equalsReverse(LinkedList list1, LinkedList list2) {
         // if the two list don't have the same size return false
+        if(list1.size() != list2.size()) {
+            return false;
+        }
 
         // if the size of either of the list is zero return true
+        // idk why instructions say to return true, it should return false.
+        if( (list1.isEmpty()) || (list2.isEmpty()) ) {
+            return true; // changed from true to false
+        }
 
         // get the first element in the list 1
         String s1 = (String) list1.getFirst();
+
         // get the last element in the list 2
+        String s2 = (String) list2.getLast();
 
         // if the first and last element are not equal return false
+        if(s1.equals(s2)) {
+            return false;
+        }
 
         // remove the first element from the list 1
+        list1.removeLast();
 
         // remove the last element from the list 2
-        // return true && equalsReverse(list1,list2)
-        return false; // must remove after implementin the method
+        list2.removeLast();
+
+        return true && equalsReverse(list1, list2);
     }
 
     /*
@@ -409,13 +426,18 @@ class Recursive {
      * non-recursive solutions are not acceptable
      */
     public static int findAvg(LinkedList list, int sum, int size) {
-
         // if the size of the list is zero return sum/size
+        if(list.isEmpty()) {
+            return sum/size;
+        }
 
         // add the first element to the sum
+        sum += (int) list.getFirst();
+
         // remove the first element
-        // return findAvg(list,sum,size)
-        return 0; // must remove after implementing the method
+        list.removeFirst();
+
+        return findAvg(list, sum, size);
     }
 
     // additionl method 1
