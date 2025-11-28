@@ -6,13 +6,13 @@ Description: Demonstrating my understanding of recursion by creating multiple re
 TOTAL Self grade score: /100 (explanation below)
 
 EXPLANATIONS...
-Proper naming: (/5)
-Indendation: (/5)
-Comments: (/25)
-Program compiles: (/30)
-Program runs & the output is similar to provided output: (/25)
-Requirements: (/25)
-Self grade: (/5)
+Proper naming: All variables and method names and short and descriptive names (5/5)
+Indendation: All code is organized and indented by at least 4 spaces (5/5)
+Comments: All logic and variables are preceded with a comment explaining their use. (25/25)
+Program compiles: Program compiles in JGRASP (30/30)
+Program runs & the output is similar to provided output: Program runs and output is similar to given output (25/25)
+Requirements: I implemented all methods, my own driver, my code works with the given driver, and I added 2 additional methods. (25/25)
+Self grade: I have provided a self grade. (5/5)
 ========================================================
 I have written the code by myself and have not copied it from ay resources. Name: Lynn Castro
 Codes without recursive implementation will get zero points.
@@ -28,12 +28,17 @@ additional  required methods:
    This method must perform a new function. This method must be unique and not similar to the given methods.
 3. the additional methods must be called in the driver
 
+=============================================================================
 Must answer the following questions
-List the extra added methods:
+List the extra added methods: vowelEnd(), evenArrayList()
 1. method 1: what does the method do? Why is this functionality important?
-...
+vowelEnd() returns a LinkedList of all the strings in the given list that end with a vowel. 
+This method is useful for writers who want to organize words or phrases end with a vowel.
+
 2. Method 2: what does the method do and why is this functionality important?
-...
+evenArrayList() returns an ArrayList of all the (double) numbers in the given list that are even.
+This method is useful for determining what float values are even.
+=============================================================================
 
 Please do not delete any of the given commnets throughout the code
 */
@@ -73,7 +78,7 @@ class YourDriver17 {
         list2.add('a');
 
         // For testing ascci()
-        String ascciiString = "abcdef";
+        String ascciiString = "Happy Thanksgiving";
 
         // For testing fib()
         LinkedList<Integer> list3 = new LinkedList<>();

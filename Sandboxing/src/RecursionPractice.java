@@ -4,6 +4,9 @@ public class RecursionPractice {
         num(1, 21);
         System.out.println("Hello World");
         reverseString("Hello World");
+        copyString("ABCD");
+        System.out.println();
+        System.out.println(copyString("ABCD", ""));
     }
 
     // from bro code youtube video, displays how many steps taken in ascending order
@@ -36,4 +39,37 @@ public class RecursionPractice {
         System.out.print(subString);
         reverseString(token.substring(0, token.length()-1)); // recursive case
     } 
+
+    public static void copyString(String input) {
+        String copy = "";
+
+        if(input.length() == 0) {
+            return;
+        }
+
+        String firstLetter = String.valueOf(input.charAt(0));
+        input = input.substring(1);
+
+
+        copyString(input);
+
+        copy += firstLetter;
+        System.out.println(copy);
+    } 
+
+    // uh.
+    public static String copyString(String input, String copy) {
+
+        if(input.length() == 0) {
+            return copy;
+        }
+
+        String firstLetter = String.valueOf(input.charAt(0));
+        input = input.substring(1);
+
+        copy += firstLetter;
+        copyString(input, copy);
+
+        return copy;
+    }
 }
