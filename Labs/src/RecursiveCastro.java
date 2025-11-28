@@ -1,14 +1,14 @@
 /*
 Name: Lynn Castro
 Date: 11/26/2025
-Description:
+Description: Demonstrating my understanding of recursion by creating multiple recursive methods
 ========================================================
 TOTAL Self grade score: /100 (explanation below)
 
 EXPLANATIONS...
 Proper naming: (/5)
 Indendation: (/5)
-Comments: s(/25)
+Comments: (/25)
 Program compiles: (/30)
 Program runs & the output is similar to provided output: (/25)
 Requirements: (/25)
@@ -31,7 +31,9 @@ additional  required methods:
 Must answer the following questions
 List the extra added methods:
 1. method 1: what does the method do? Why is this functionality important?
+...
 2. Method 2: what does the method do and why is this functionality important?
+...
 
 Please do not delete any of the given commnets throughout the code
 */
