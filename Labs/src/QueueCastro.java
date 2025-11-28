@@ -4,15 +4,17 @@ Description: Demonstrating my understanding of queues and exception handling
 Date: 11/19/2025
 
 ========================================================
-TOTAL Self grade score: 0/100 (explanation below)
+TOTAL Self grade score: 95/100 (explanation below)
 
 EXPLANATIONS...
-Proper naming: (0/5)
-Indendation: (0/5)
-Comments: (0/25)
-Program compiles: (0/30)
-Program runs & the output is similar to provided output: (0/25)
-Requirements: (/25)
+Proper naming: All of my variables and methods have short and descriptive names (5/5)
+Indendation: All code is organized and neatly tabbed by at least 4 spaces (5/5)
+Comments: All data and logic is preceded with a comment, however I did not remove some of the given comments(20/25)
+Program compiles: Yes, program compiles with both drivers. (30/30)
+Program runs & the output is similar to provided output: My driver output is similar to the given output. (25/25)
+Requirements: I added two instance variables to the song class, 
+              a compareTo method called albumCompareTo & songLengthCompareTo, based on the instance variables,
+              and a new method in the queue class that uses try-catch and the new compareTo method I added. (25/25)
 Self grade: I have provided a self grade. (5/5)
 ========================================================
 I have written all the code by myself and did not copy code from other resources. Name: Lynn Castro
@@ -60,6 +62,11 @@ class Song {
         return singer;
     }
 
+    // mutator method for album, for my additional method
+    public void setAlbum(String album) {
+        this.album = album;
+    }
+
     // Accessor methods for the 2 additional instance variables
     public int getSongLength() {
         return songLength;
@@ -92,10 +99,7 @@ class Song {
 
     }
 
-    /*
-    compares the two songs based on the singer, if same singer, then compares the
-    two songs based on the name of the songs name
-    */
+    // compares 2 songs based on the singer, if same singer, compares their songs
     public int compareTo(Song other) {
         // singer equals singer, compare song names
         if(this.singer.compareTo(other.singer) == 0)
@@ -106,29 +110,30 @@ class Song {
             return this.singer.compareTo(other.singer);
     }
     
-    // Must add a new compareTo method that is based on the instance variables you added
-    public int compareTo(String album, int songLength) {
-        // same album, compare track lengths
-        if(this.album.compareTo(album) == 0) {
-            int lengthDiff = 0;
-
-            // song length is longer than compared arg
-            if(this.songLength > songLength) {
-                lengthDiff = this.songLength - songLength;
-            }
-
-            // song length is shorter than compared arg
-            else if(this.songLength < songLength) {
-                lengthDiff = this.songLength - songLength;
-            }
-
-            // else, song length is equal, return 0
-            return lengthDiff;
+    // additional compareTo, compares 2 albums
+    public int albumCompareTo(Song o) {
+        // same album
+        if(this.album.equalsIgnoreCase(o.getAlbum())) {
+            return 0;
         }
 
-        // two different albums
-        else 
-            return this.getAlbum().compareTo(album);
+        // different album
+        else {
+            return this.album.compareTo(o.getAlbum());
+        }
+    }
+
+    // additional compareTo, compares 2 songLengths
+    public int songLengthCompareTo(Song o) {
+        // same songLength
+        if(this.songLength == o.getSongLength()) {
+            return 0;
+        }
+
+        // diff songLength
+        else {
+            return this.songLength - o.getSongLength();
+        }
     }
 }
 
@@ -147,14 +152,7 @@ class Queue {
 
     }
 
-    /*
-     * adding a song to the end of the queue. Adding an element at the end of the
-     * queue. The variable count is the index of the first
-     * available spot at the end of the array
-     * make sure to increment the count after you place a song at the end of the
-     * list
-     */
-
+    // adds the given song to the end of list
     public void enqueue(Song s) {
         try {
             list[count] = s;
@@ -166,17 +164,7 @@ class Queue {
         } 
     }
 
-    /*
-     * removing a song from the front of the queue. removing the element at the
-     * index 0
-     * Song s = list[0]
-     * list[0] = null
-     * 
-     * after setting the list[0] to null, all the elemnets must be shifted to the
-     * left. shift method must be called
-     * after ethe shift method is called decrement the count by 1
-     */
-
+    // removes the song at the top of the queue, then uses shift()
     public Song dequeue() {
         Song s = null;
 
@@ -199,17 +187,7 @@ class Queue {
         return s;
     }
 
-    /*
-     * this method shifts the elements of the array to the left. This method is
-     * called in the dequeue method.
-     * a for loop is needed to shift the elements. We have to make sure that all the
-     * null values are at the end of the queue
-     * for example if the array is :
-     * a b c d null null null
-     * 
-     * null b c d null null null//making the first element null
-     * b c d null null null null //shifting all the elements to the left
-     */
+    // shifts entire list to the left after removing the first song
     public void shift() {
 
         // make the first element null
@@ -235,19 +213,17 @@ class Queue {
      * loop or a counter for the index can be used
      */
     public void play() {
+        // Declarations
         String border = "-=".repeat(25);
-        // declare a stack called s
         Stack<Song> s = new Stack<>();
-        // declare a Scanner object
         Scanner scan = new Scanner(System.in);
-        // declare a boolean variable called done and set it to false
         boolean done = false;
+
         // while done is false
         while(!done)
         {
             try {
-                // dequeue a song , store it in a variable called front of type Song, dequeue
-                // method must be called
+                // dequeue a song , store it in a variable called front of type Song, dequeue method must be called
                 Song front = dequeue();
 
                 // if dequeued song is null throw an exception
@@ -270,7 +246,7 @@ class Queue {
             }
 
         }
-        // call the restor method and pass the s to it
+        // call the restore method and pass the s to it
         restore(s);
     }
 
@@ -285,14 +261,12 @@ class Queue {
      * Must use LinkList for the method below otherwise zero points will be given
      * for the whole code
      */
+
+    // gets all of the songs under the given singer's name
     public LinkedList<Song> getSingerSongs(String singer) {
-        // declare an LinkList of Song with the name songs, to hold all the songs with the given siger
+        // Declarations
         LinkedList<Song> songs = new LinkedList<>();
-
-        // declare a stack named s
         Stack<Song> s = new Stack<>();
-
-        // declare a boolen variable called done and set it to false
         boolean done = false;
 
         // while done is false
@@ -317,7 +291,6 @@ class Queue {
                 }
                 
             } catch (Exception e) {
-                // set b to true
                 done = true;
             }
 
@@ -325,8 +298,7 @@ class Queue {
         // call the restore method and pass the stack s to it
         restore(s);
 
-        return songs;// Change this to return the arraylist songs
-
+        return songs;
     }
 
     /*
@@ -340,6 +312,8 @@ class Queue {
      * Keep dequeuing from the array until a null is dequeued at that point an
      * Exception must be thrown
      */
+
+    // displays all the songs and their details in the list
     public String toString() {
         String songsDisplay = "";
         Stack<Song> s = new Stack<>();
@@ -390,6 +364,8 @@ class Queue {
      * b c d then method reverse will change the queue to
      * d c b a
      */
+
+    // reverses the order of songs in the list
     public void reverseOrder() {
         // declare a boolean called done = false
         boolean done = false;
@@ -512,20 +488,87 @@ class Queue {
         }
     }
 
-    // Additional method
-    public Queue favoriteSongs(Queue list, Scanner scan) {
+    // Additional method, marks a song as a 'favorite'
+    public void favoriteAlbum() {
+        Scanner scan = new Scanner(System.in);
         boolean quit = false;
+        boolean favorited = false;
 
         while(!quit) {
-            System.out.println("Enter 'q' or 'Q' to quit.");
-            System.out.print("Enter the song title you want to add to your favorites: ");
-            String input = scan.nextLine();
-            if( (input.equalsIgnoreCase("q")) ) quit = true;
+            try{
+                System.out.println("Enter 'q' or 'Q' to quit.");
+                System.out.println("Displaying playlist: \n" + toString());
+                System.out.print("Enter the album title you want to add to your favorites, " + 
+                                 "if the given album is already favorited, it will unfavorite, or quit program > ");
+                String input = scan.nextLine();
 
-            //....
+                // user quit
+                if(input.equalsIgnoreCase("q")) {
+                    scan.close();
+                    quit = true;
+                }
+
+                else {
+                    for(int i=0; i<this.count; i++) {
+                        // upper case first letter
+                        input = input.substring(0, 1).toUpperCase() + input.substring(1, input.length());
+
+                        // create new Song object with input as the album name
+                        Song o = new Song(null, null, 0, input);
+
+                        // search for the song and add a favorite tag to the song name
+
+                        // not already favorited
+                        if(list[i].albumCompareTo(o) == 0) {
+                            System.out.println("Favoriting album...");
+                            input = list[i].getAlbum();
+                            list[i].setAlbum(input += "(FAVORITE)");    // I added a setAlbum(String album) method in the Song class
+                            favorited = true;
+                        }
+
+                        // check if trying to unfavorite
+                        else if((list[i].getAlbum().contains("(FAVORITE)")) && (!favorited)) {
+                            // check if input matches album name
+                            String currAlbum = list[i].getAlbum();
+
+                            for(int k=0; k<currAlbum.length(); k++) {
+                                if(currAlbum.charAt(k) == '(') {
+                                    currAlbum = currAlbum.substring(0, k);
+                                }
+                            }
+
+                            // substring without (FAVORITE) equals the given input
+                            if(currAlbum.equalsIgnoreCase(input)) {
+                                System.out.printf("Unfavoriting...");
+                                String album = list[i].getAlbum();
+
+                                for(int j=0; j<album.length(); j++) {
+                                    if(album.charAt(j) == '(') {
+                                        album = album.substring(0, j);
+                                        list[i].setAlbum(album);
+                                    }
+                                }
+                                favorited = true; // removed the favorite tag, so we did find a match
+                            }
+                        }
+                    }
+
+                    // given album is not in the list
+                    if(!favorited) {
+                        System.out.printf("Did not find '%s' in the list. Did not add anything to favorites.%n", input);
+                    }
+                    favorited = false;
+                }
+            }
+
+            // In case there is a mismatch input, but there shouldn't be because nextLine() turns any input into a String
+            catch(Exception e) {
+                System.out.println("Invalid input. Exiting method...");
+                scan.close();
+                quit = true;
+            }
         }
     }
-
 }
 
 /*
@@ -565,6 +608,7 @@ class Driver {
 }
 */
 
+
 /*
  * 20 points
  * create at least 5 objects and create the driver similar to the given one
@@ -572,6 +616,7 @@ class Driver {
  * the given driver
  * Must create your own list of songs
  */
+ 
 
 class YourDriver {
     public static void main(String[] args) {
@@ -615,5 +660,9 @@ class YourDriver {
         // testing getPercentage()
         System.out.printf("%s%nTesting getPercentage(). Getting percentage of songs in the playlist by 'Shihoko Hirata'... %n", border);
         System.out.println(playlist1.getPercentage("Shihoko Hirata"));
+
+        // testing ADDITIONAL method, favoriteSong()
+        System.out.printf("%s%nTesting ADDITIONAL METHOD favortiteAlbum() %n%n", border);      
+        playlist1.favoriteAlbum();
     }  
 }
