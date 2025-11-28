@@ -408,12 +408,12 @@ class Recursive {
         String s2 = (String) list2.getLast();
 
         // if the first and last element are not equal return false
-        if(s1.equals(s2)) {
+        if(!(s1.equals(s2))) {
             return false;
         }
 
         // remove the first element from the list 1
-        list1.removeLast();
+        list1.removeFirst();
 
         // remove the last element from the list 2
         list2.removeLast();
