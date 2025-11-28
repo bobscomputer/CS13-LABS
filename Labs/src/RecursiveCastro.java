@@ -54,14 +54,15 @@ public class RecursiveCastro {
  * 
  */
 
-/*
 class YourDriver17 {
     public static void main(String[] args) {
+        // For testing printReverse();
         LinkedList<Integer> list = new LinkedList<>();
         list.add(1);
         list.add(2);
         list.add(3);
 
+        // For testing palindrome()
         LinkedList<Character> list2 = new LinkedList<>();
         list2.add('a');
         list2.add('b');
@@ -69,31 +70,99 @@ class YourDriver17 {
         list2.add('b');
         list2.add('a');
 
+        // For testing ascci()
         String ascciiString = "abcdef";
 
+        // For testing fib()
         LinkedList<Integer> list3 = new LinkedList<>();
 
+        // For testing listReverse
+        LinkedList<Character> list4 = new LinkedList<>();
+        list4.add('H');
+        list4.add('e');
+        list4.add('l');
+        list4.add('l');
+        list4.add('o');
+        list4.add('!');
+
+        LinkedList<Character> list5 = new LinkedList<>();
+
+        // For testing equalsReverse()
+        LinkedList<Character> list6 = (LinkedList<Character>) list4.clone();
+
+        // For testing longest()
+        LinkedList<String> list7 = new LinkedList<>();
+        list7.add("Hello World");
+        list7.add("Bonjour");
+        list7.add("Aloha");
+        list7.add("Greetings");
+
+        // Testing methods ----------------------------
+        String border = "=-".repeat(15);
+
         // testing printReverse() ... works! :)
-        System.out.println(list);
+        System.out.printf("%s %s %s %n", border, "Reversing a list", "=-".repeat(25));
+        System.out.println(list + " reversing...");
         Recursive.printReverse(list);
 
         // testing palindrome() ...  works :)
         System.out.println();
-        System.out.println(list2);
-        System.out.println("Is list 2 a palindrome? > " + Recursive.palindrome(list2));
+        System.out.printf("%s %s %s %n", border, "Is the list a palindrome?", "=-".repeat(21));
+        System.out.println("Is " + list2 + " a palindrome? > " + Recursive.palindrome(list2));
 
         // testing asccii ... works :)
-        System.out.println(Recursive.asccii(ascciiString));
+        System.out.println();
+        System.out.printf("%s %s %s %n", border, "Asccii code", "=-".repeat(28));
+        System.out.println("Getting asccii codes from '" + ascciiString + "' > " + Recursive.asccii(ascciiString));
 
         // testing fib ... works :)
-        Recursive.fib(list3, 8);
-        System.out.println(list3);
+        System.out.println();
+        System.out.printf("%s %s %s %n", border, "Fibonacci series", "=-".repeat(25));
 
+        Recursive.fib(list3, 8);
+        System.out.println("Fibonacci series starting with '1, 1' > " + list3);
+        
+        // testing listReversed() ... works :)
+        System.out.println();
+        System.out.printf("%s %s %s %n", border, "Reversing a list", "=-".repeat(25));
+
+        System.out.print(list4 + " Reversed list > ");
+        Recursive.listReversed(list4, list5);
+        System.out.print(list5);
+        System.out.println();
+
+        // testing equalsReverse() ... works :)
+        System.out.println();
+        System.out.printf("%s %s %s %n", border, "Do two lists equal in reverse order?", "=-".repeat(15));
+        System.out.println(list6);
+        System.out.println(list5);
+        System.out.println("Do the 2 lists match in reverse order > " + Recursive.equalsReverse(list6, list5));
+
+        // testing longest ... works :)
+        System.out.println();
+        System.out.printf("%s %s %s %n", border, "Whats the longest string in the list?", border);
+
+        System.out.println(list7);
+        System.out.println("Longest string in the list is > " + Recursive.longest(list7, ""));
+
+        // testing findAvg() ... works
+        System.out.println();
+        System.out.printf("%s %s %s %n", border, "Whats the average number in the list?", border);
+        System.out.println(list3 + " ...Average for list > " + Recursive.findAvg(list3, 0, list3.size()));
+
+        // Testing additional methods!
+        System.out.println();
+        System.out.println("=*".repeat(50));
+        System.out.println("Additional method #1...");
+        System.out.println("Additional method #2...");
+
+        System.out.println("=*".repeat(50));
+        // end of code for my driver
     }
 }
-// Do not delete the given driver */
+// Do not delete the given driver 
 
-// TEMPORARILY changed name from Driver to Driver16 so I can run in vscode
+/* TEMPORARILY changed name from Driver to Driver16 so I can run in vscode
 class Driver16 {
     public static void main(String[] args) {
 
@@ -207,7 +276,7 @@ class Driver16 {
         // calling the additional methods
 
     }
-} // end of driver class 
+} // end of (given) driver class */
 
 /*
  * In this program you must use the following methods from the LinkedList class
@@ -398,14 +467,14 @@ class Recursive {
         // if the size of either of the list is zero return true
         // idk why instructions say to return true, it should return false.
         if( (list1.isEmpty()) || (list2.isEmpty()) ) {
-            return true; // changed from true to false
+            return true; 
         }
 
         // get the first element in the list 1
-        String s1 = (String) list1.getFirst();
+        String s1 = String.valueOf(list1.getFirst());
 
         // get the last element in the list 2
-        String s2 = (String) list2.getLast();
+        String s2 = String.valueOf(list2.getLast());
 
         // if the first and last element are not equal return false
         if(!(s1.equals(s2))) {
@@ -441,6 +510,7 @@ class Recursive {
     }
 
     // additionl method 1
+    
 
     // addditional method 2
 
