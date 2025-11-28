@@ -3,7 +3,7 @@ Name: Lynn Castro
 Date: 11/26/2025
 Description: Demonstrating my understanding of recursion by creating multiple recursive methods
 ========================================================
-TOTAL Self grade score: /100 (explanation below)
+TOTAL Self grade score: 100/100 (explanation below)
 
 EXPLANATIONS...
 Proper naming: All variables and method names and short and descriptive names (5/5)
